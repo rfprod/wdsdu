@@ -6,7 +6,7 @@ DevSetupDebianUnuntu - an installation script and instructions for Debian/Ubuntu
 
 ### Application
 
-Can be used to to deploy Debian/Ubuntu web-development environment, which includes the following:
+Can be used to deploy Debian/Ubuntu web-development environment, which includes the following:
 
 - `FreeRDP X11 client`
 - `Chromium browser`
