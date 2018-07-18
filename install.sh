@@ -6,9 +6,9 @@ source util-echo_colours.sh
 # user input timeout
 WAIT_TIMEOUT=6
 
-# sets default user choise value
-function defaultUserChoise() {
-	if [ -z "$userChoise" ]; then
+# sets default user choice value
+function defaultUserChoice() {
+	if [ -z "$userChoice" ]; then
 		userChoice=y
 	fi	
 }
@@ -32,7 +32,7 @@ printf "\n\n${YELLOW} - ${CYAN}Install dependencies required for subsequent inst
 ## install guake, and tmux
 printf "\n\n${YELLOW} - ${CYAN}Install guake, and tmux...${DEFAULT}\n\n"
 read -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
-defaultUserChoise
+defaultUserChoice
 case $userChoice in
 	y|Y )
 		# notify user, and install
@@ -46,14 +46,14 @@ case $userChoice in
 		;;
 	* )
 		# implicitly cancelled by user
-		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choise: ${RED}$userChoice ${DEFAULT} \n"
+		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choice: ${RED}$userChoice ${DEFAULT} \n"
 		;;
 esac
 
 ## install xfreerdp
 printf "\n\n${YELLOW} - ${CYAN}Install xfreerdp...${DEFAULT}\n\n"
 read -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
-defaultUserChoise
+defaultUserChoice
 case $userChoice in
 	y|Y )
 		# notify user, and install
@@ -67,14 +67,14 @@ case $userChoice in
 		;;
 	* )
 		# implicitly cancelled by user
-		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choise: ${RED}$userChoice ${DEFAULT} \n"
+		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choice: ${RED}$userChoice ${DEFAULT} \n"
 		;;
 esac
 
 ## install chromium-browser
 printf "\n\n${YELLOW} - ${CYAN}Install chromium-browser...${DEFAULT}\n\n"
 read -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
-defaultUserChoise
+defaultUserChoice
 case $userChoice in
 	y|Y )
 		# notify user, and install
@@ -88,14 +88,14 @@ case $userChoice in
 		;;
 	* )
 		# implicitly cancelled by user
-		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choise: ${RED}$userChoice ${DEFAULT} \n"
+		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choice: ${RED}$userChoice ${DEFAULT} \n"
 		;;
 esac
 
 ## install google-chrome-stable
 printf "\n\n${YELLOW} - ${CYAN}Install google-chrome-stable...${DEFAULT}\n\n"
 read -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
-defaultUserChoise
+defaultUserChoice
 case $userChoice in
 	y|Y )
 		# notify user, and install
@@ -112,14 +112,14 @@ case $userChoice in
 		;;
 	* )
 		# implicitly cancelled by user
-		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choise: ${RED}$userChoice ${DEFAULT} \n"
+		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choice: ${RED}$userChoice ${DEFAULT} \n"
 		;;
 esac
 
 ## install git
 printf "\n\n${YELLOW} - ${CYAN}Install git...${DEFAULT}\n\n"
 read -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
-defaultUserChoise
+defaultUserChoice
 case $userChoice in
 	y|Y )
 		# notify user, and install
@@ -133,14 +133,14 @@ case $userChoice in
 		;;
 	* )
 		# implicitly cancelled by user
-		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choise: ${RED}$userChoice ${DEFAULT} \n"
+		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choice: ${RED}$userChoice ${DEFAULT} \n"
 		;;
 esac
 
 ## install docker stable, remove old first
 printf "\n\n${YELLOW} - ${CYAN}Install docker...${DEFAULT}\n\n"
 read -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
-defaultUserChoise
+defaultUserChoice
 case $userChoice in
 	y|Y )
 		# notify user, and install
@@ -162,14 +162,14 @@ case $userChoice in
 		;;
 	* )
 		# implicitly cancelled by user
-		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choise: ${RED}$userChoice ${DEFAULT} \n"
+		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choice: ${RED}$userChoice ${DEFAULT} \n"
 		;;
 esac
 
 ## install heroku cli
 printf "\n\n${YELLOW} - ${CYAN}Install heroku cli...${DEFAULT}\n\n"
 read -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
-defaultUserChoise
+defaultUserChoice
 case $userChoice in
 	y|Y )
 		# notify user, and install
@@ -183,14 +183,14 @@ case $userChoice in
 		;;
 	* )
 		# implicitly cancelled by user
-		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choise: ${RED}$userChoice ${DEFAULT} \n"
+		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choice: ${RED}$userChoice ${DEFAULT} \n"
 		;;
 esac
 
 ## install nodejs v8, and build essential for compiling and installing native addons
 printf "\n\n${YELLOW} - ${CYAN}Install nodejs v8, and build-essential...${DEFAULT}\n\n"
 read -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
-defaultUserChoise
+defaultUserChoice
 case $userChoice in
 	y|Y )
 		# notify user, and install
@@ -206,14 +206,14 @@ case $userChoice in
 		;;
 	* )
 		# implicitly cancelled by user
-		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choise: ${RED}$userChoice ${DEFAULT} \n"
+		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choice: ${RED}$userChoice ${DEFAULT} \n"
 		;;
 esac
 
 ## install global npm dependencies: @angular/cli, firebase-tools, git-stats, git-stats-importer, gulp-cli, n, npm-check-updates, nsp, svgo, swagger, typescript
 printf "\n\n${YELLOW} - ${CYAN}Install global npm dependencies...\n List: \n- @angular/cli \n- firebase-tools \n- git-stats \n- git-stats-importer \n- gulp-cli \n- n \n- npm-check-updates \n- nsp \n- svgo \n- swagger \n- typescript${DEFAULT}\n\n"
 read -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
-defaultUserChoise
+defaultUserChoice
 case $userChoice in
 	y|Y )
 		# notify user, and install
@@ -317,14 +317,14 @@ case $userChoice in
 		;;
 	* )
 		# implicitly cancelled by user
-		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choise: ${RED}$userChoice ${DEFAULT} \n"
+		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choice: ${RED}$userChoice ${DEFAULT} \n"
 		;;
 esac
 
 ## install sublime stable
 printf "\n\n${YELLOW} - ${CYAN}Install sublime stable...${DEFAULT}\n\n"
 read -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
-defaultUserChoise
+defaultUserChoice
 case $userChoice in
 	y|Y )
 		# notify user, and install
@@ -354,6 +354,6 @@ case $userChoice in
 		;;
 	* )
 		# implicitly cancelled by user
-		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choise: ${RED}$userChoice ${DEFAULT} \n"
+		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choice: ${RED}$userChoice ${DEFAULT} \n"
 		;;
 esac
