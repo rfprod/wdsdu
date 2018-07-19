@@ -8,25 +8,28 @@ DevSetupDebianUnuntu - an installation script and instructions for Debian/Ubuntu
 
 Can be used to deploy Debian/Ubuntu web-development environment, which includes the following:
 
-- `FreeRDP X11 client`
-- `Chromium browser`
-- `Google Chrome Stable`
-- `Git`
-- `NodeJS v8` + `build essential`
-- `Docker`
-- `Heroku`
+- [`Guake`](http://guake-project.org/)
+- [`Tmux`](https://en.wikipedia.org/wiki/Tmux)
+- [`FreeRDP X11 client`](https://github.com/FreeRDP/FreeRDP/tree/master/client/X11)
+- [`Chromium browser`](https://www.chromium.org/)
+- [`Google Chrome Stable`](https://www.google.com/chrome/index.html)
+- [`Git`](https://git-scm.com/)
+- [`NodeJS v8` + `build essential`](https://nodejs.org/en/)
+- [`Docker`](https://www.docker.com/)
+- [`Heroku`](https://www.heroku.com/)
 - `Global NPM dependencies`:
-  - `@angular/cli`
-  - `firebase-tools`
-  - `git-stats git-stats-importer`
-  - `gulp-cli`
-  - `n`
-  - `npm-check-updates`
-  - `nsp`
-  - `svgo`
-  - `swagger`
-  - `typescript`
-- `Sublime Text` (TODO: install packages automatically, for now should be done manually)
+  - [`@angular/cli`](https://cli.angular.io/)
+  - [`firebase-tools`](https://firebase.google.com/docs/cli/)
+  - [`git-stats`](https://github.com/IonicaBizau/git-stats)
+  - [`git-stats-importer`](https://github.com/IonicaBizau/git-stats-importer)
+  - [`gulp-cli`](https://github.com/gulpjs/gulp-cli)
+  - [`n`](https://github.com/tj/n)
+  - [`npm-check-updates`](https://github.com/tjunnone/npm-check-updates)
+  - [`nsp`](https://nodesecurity.io/)
+  - [`svgo`](https://github.com/svg/svgo)
+  - [`swagger`](https://swagger.io/)
+  - [`typescript`](https://www.typescriptlang.org/)
+- [`Sublime Text`](https://www.sublimetext.com/3) (TODO: install packages automatically, for now should be done manually)
 
 ### Docker documentation
 

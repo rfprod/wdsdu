@@ -337,13 +337,15 @@ case $userChoice in
 
 		## TODO: install sublime extensions automatically
 		printf "\n${LIGHT_BLUE}You should install the following Sublime packages manually (install Package Control first via Sublime UI):${DEFAULT}\n"
+		printf "\n ${YELLOW}- ${LIGHT_BLUE}Package Control${DEFAULT}"
+		printf "\n ${YELLOW}- ${LIGHT_BLUE}All Autocomplete${DEFAULT}"
 		printf "\n ${YELLOW}- ${LIGHT_BLUE}Angular 2 Snippets (John Papa)${DEFAULT}"
+		printf "\n ${YELLOW}- ${LIGHT_BLUE}Babel${DEFAULT}"
 		printf "\n ${YELLOW}- ${LIGHT_BLUE}Dockerfile Syntax Highlighting${DEFAULT}"
 		printf "\n ${YELLOW}- ${LIGHT_BLUE}EditorConfig${DEFAULT}"
 		printf "\n ${YELLOW}- ${LIGHT_BLUE}Gitignored File Excluder${DEFAULT}"
-		printf "\n ${YELLOW}- ${LIGHT_BLUE}JavaScriptNext - ES6 Syntax${DEFAULT}"
+		printf "\n ${YELLOW}- ${LIGHT_BLUE}JavaScript Completions${DEFAULT}"
 		printf "\n ${YELLOW}- ${LIGHT_BLUE}JsFormat${DEFAULT}"
-		printf "\n ${YELLOW}- ${LIGHT_BLUE}MarkdownPreview${DEFAULT}"
 		printf "\n ${YELLOW}- ${LIGHT_BLUE}ngx-html-syntax${DEFAULT}"
 		printf "\n ${YELLOW}- ${LIGHT_BLUE}SCSS${DEFAULT}"
 		printf "\n ${YELLOW}- ${LIGHT_BLUE}Typescript${DEFAULT}\n\n"
