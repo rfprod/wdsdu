@@ -10,14 +10,14 @@ WAIT_TIMEOUT=6
 function defaultUserChoice() {
 	if [ -z "$userChoice" ]; then
 		userChoice=y
-	fi	
+	fi
 }
 
 # sets user choice value to no, used for optional installation
 function optionalUserChoice() {
 	if [ -z "$userChoice" ]; then
 		userChoice=n
-	fi	
+	fi
 }
 
 printf "\n\n${LIGHT_BLUE}This script will install dependencies required for development...${DEFAULT}\n\n"
@@ -342,6 +342,18 @@ case $userChoice in
 		#sudo apt-get install atom
 
 		## TODO: install atom packages
+		#apm install atom-material-ui
+		#apm install atom-material-syntax-dark
+		#apm install autocomplete-paths
+		#apm install autoclose-html
+		#apm install highlight-selected
+		#apm install minimap
+		#apm install minimap-highlight-selected
+		#apm install atom-ide-ui
+		#apm install atom-typescript
+		#apm install language-docker
+		#apm install language-jenkinsfile
+		#apm install editorconfig
 		;;
 	n|N )
 		# explicitly cancelled by user
