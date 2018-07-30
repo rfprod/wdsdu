@@ -29,6 +29,7 @@ Can be used to deploy Debian/Ubuntu web-development environment, which includes 
   - [`svgo`](https://github.com/svg/svgo)
   - [`swagger`](https://swagger.io/)
   - [`typescript`](https://www.typescriptlang.org/)
+- [`Atom`](https://atom.io/)
 - [`Sublime Text`](https://www.sublimetext.com/3) (TODO: install packages automatically, for now should be done manually)
 
 ### Docker documentation

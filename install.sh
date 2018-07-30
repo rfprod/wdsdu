@@ -13,6 +13,13 @@ function defaultUserChoice() {
 	fi	
 }
 
+# sets user choice value to no, used for optional installation
+function optionalUserChoice() {
+	if [ -z "$userChoice" ]; then
+		userChoice=n
+	fi	
+}
+
 printf "\n\n${LIGHT_BLUE}This script will install dependencies required for development...${DEFAULT}\n\n"
 
 ## update apt
@@ -310,6 +317,31 @@ case $userChoice in
 			# TODO: uncomment subsequent line
 			#sudo npm install -g typescript@latest
 		fi
+		;;
+	n|N )
+		# explicitly cancelled by user
+		printf "\n ${LIGHT_CYAN}  >> cancelled by user, user choice: $userChoice ${DEFAULT} \n"
+		;;
+	* )
+		# implicitly cancelled by user
+		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choice: ${RED}$userChoice ${DEFAULT} \n"
+		;;
+esac
+
+## install atom
+printf "\n\n${YELLOW} - ${CYAN}Install atom...${DEFAULT}\n\n"
+read -p "    > confirm, will NOT be installed in $WAIT_TIMEOUT seconds unless confirmed (y/n)?" -t $WAIT_TIMEOUT userChoice
+optionalUserChoice
+case $userChoice in
+	y|Y )
+		# notify user, and install
+		printf "\n ${LIGHT_CYAN}  >> installing atom ${DEFAULT} \n\n"
+		# TODO: uncomment subsequent lines
+		#sudo add-apt-repository ppa:webupd8team/atom
+		#sudo apt-get update
+		#sudo apt-get install atom
+
+		## TODO: install atom packages
 		;;
 	n|N )
 		# explicitly cancelled by user
