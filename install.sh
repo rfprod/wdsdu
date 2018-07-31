@@ -349,11 +349,13 @@ case $userChoice in
 		#apm install highlight-selected
 		#apm install minimap
 		#apm install minimap-highlight-selected
+		#apm install minimap-bookmarks
 		#apm install atom-ide-ui
 		#apm install atom-typescript
 		#apm install language-docker
 		#apm install language-jenkinsfile
 		#apm install editorconfig
+		#apm install emmet
 		;;
 	n|N )
 		# explicitly cancelled by user
