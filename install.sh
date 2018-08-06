@@ -217,8 +217,8 @@ case $userChoice in
 		;;
 esac
 
-## install global npm dependencies: @angular/cli, firebase-tools, git-stats, git-stats-importer, gulp-cli, n, npm-check-updates, nsp, svgo, swagger, typescript
-printf "\n\n${YELLOW} - ${CYAN}Install global npm dependencies...\n List: \n- @angular/cli \n- firebase-tools \n- git-stats \n- git-stats-importer \n- gulp-cli \n- n \n- npm-check-updates \n- nsp \n- svgo \n- swagger \n- typescript${DEFAULT}\n\n"
+## install global npm dependencies: @angular/cli, firebase-tools, git-stats, git-stats-importer, gulp-cli, n, npm-check-updates, svgo, swagger, typescript
+printf "\n\n${YELLOW} - ${CYAN}Install global npm dependencies...\n List: \n- @angular/cli \n- firebase-tools \n- git-stats \n- git-stats-importer \n- gulp-cli \n- n \n- npm-check-updates \n- svgo \n- swagger \n- typescript${DEFAULT}\n\n"
 read -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
@@ -284,14 +284,6 @@ case $userChoice in
 			printf " ${YELLOW} > ${LIGHT_CYAN} dependency check: ${LIGHT_RED}npm-check-updates is not installed ${DEFAULT}\n"
 			# TODO: uncomment subsequent line
 			#sudo npm install -g npm-check-updates@latest
-		fi
-
-		if grep -q nsp@ <<<$DEPS; then
-			printf " ${YELLOW} > ${LIGHT_CYAN} dependency check: ${GREEN}nsp installed ${DEFAULT}\n"
-		else
-			printf " ${YELLOW} > ${LIGHT_CYAN} dependency check: ${LIGHT_RED}nsp is not installed ${DEFAULT}\n"
-			# TODO: uncomment subsequent line
-			#sudo npm install -g nsp@latest
 		fi
 
 		if grep -q svgo@ <<<$DEPS; then

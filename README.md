@@ -25,7 +25,6 @@ Can be used to deploy Debian/Ubuntu web-development environment, which includes 
   - [`gulp-cli`](https://github.com/gulpjs/gulp-cli)
   - [`n`](https://github.com/tj/n)
   - [`npm-check-updates`](https://github.com/tjunnone/npm-check-updates)
-  - [`nsp`](https://nodesecurity.io/)
   - [`svgo`](https://github.com/svg/svgo)
   - [`swagger`](https://swagger.io/)
   - [`typescript`](https://www.typescriptlang.org/)
