@@ -14,7 +14,7 @@ Can be used to deploy Debian/Ubuntu web-development environment, which includes 
 - [`Chromium browser`](https://www.chromium.org/)
 - [`Google Chrome Stable`](https://www.google.com/chrome/index.html)
 - [`Git`](https://git-scm.com/)
-- [`NodeJS v8` + `build essential`](https://nodejs.org/en/)
+- [`NodeJS v8` + `build essential` + `latest npm`](https://nodejs.org/en/)
 - [`Docker`](https://www.docker.com/)
 - [`Heroku`](https://www.heroku.com/)
 - `Global NPM dependencies`:

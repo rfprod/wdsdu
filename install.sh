@@ -195,7 +195,7 @@ case $userChoice in
 esac
 
 ## install nodejs v8, and build essential for compiling and installing native addons
-printf "\n\n${YELLOW} - ${CYAN}Install nodejs v8, and build-essential...${DEFAULT}\n\n"
+printf "\n\n${YELLOW} - ${CYAN}Install nodejs v8, and build-essential, and update npm to latest version...${DEFAULT}\n\n"
 read -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
@@ -206,6 +206,7 @@ case $userChoice in
 		#curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 		#sudo apt install -y nodejs
 		#sudo apt install -y build-essential
+		#sudo npm install -g npm
 		;;
 	n|N )
 		# explicitly cancelled by user
