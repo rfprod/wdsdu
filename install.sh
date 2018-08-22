@@ -360,6 +360,35 @@ case $userChoice in
 		;;
 esac
 
+## install vscode
+printf "\n\n${YELLOW} - ${CYAN}Install vscode...${DEFAULT}\n\n"
+read -p "    > confirm, will NOT be installed in $WAIT_TIMEOUT seconds unless confirmed (y/n)?" -t $WAIT_TIMEOUT userChoice
+optionalUserChoice
+case $userChoice in
+	y|Y )
+		# notify user, and install
+		printf "\n ${LIGHT_CYAN}  >> installing vscode ${DEFAULT} \n\n"
+		# TODO: uncomment subsequent lines
+		#wget -qO - https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+		#sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+		#sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+		#sudo apt-get update
+		#sudo apt-get install code # or code-insiders
+
+		## TODO: install vscode packages
+		#code --install-extension editorconfig.editorconfig
+		#code --install-extension ionutvmi.path-autocomplete
+		;;
+	n|N )
+		# explicitly cancelled by user
+		printf "\n ${LIGHT_CYAN}  >> cancelled by user, user choice: $userChoice ${DEFAULT} \n"
+		;;
+	* )
+		# implicitly cancelled by user
+		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choice: ${RED}$userChoice ${DEFAULT} \n"
+		;;
+esac
+
 ## install sublime stable
 printf "\n\n${YELLOW} - ${CYAN}Install sublime stable...${DEFAULT}\n\n"
 read -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice

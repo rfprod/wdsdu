@@ -29,6 +29,7 @@ Can be used to deploy Debian/Ubuntu web-development environment, which includes 
   - [`swagger`](https://swagger.io/)
   - [`typescript`](https://www.typescriptlang.org/)
 - [`Atom`](https://atom.io/)
+- [`VSCode`](https://code.visualstudio.com/)
 - [`Sublime Text`](https://www.sublimetext.com/3) (TODO: install packages automatically, for now should be done manually)
 
 ### Docker documentation
