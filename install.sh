@@ -378,6 +378,7 @@ case $userChoice in
 		## TODO: install vscode packages
 		#code --install-extension editorconfig.editorconfig
 		#code --install-extension ionutvmi.path-autocomplete
+		#code --install-extension peterjausovec.vscode-docker
 		;;
 	n|N )
 		# explicitly cancelled by user
