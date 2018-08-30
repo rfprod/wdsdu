@@ -379,6 +379,7 @@ case $userChoice in
 		#code --install-extension editorconfig.editorconfig
 		#code --install-extension ionutvmi.path-autocomplete
 		#code --install-extension peterjausovec.vscode-docker
+		#code --install-extension atishay-jain.all-autocomplete
 		;;
 	n|N )
 		# explicitly cancelled by user
