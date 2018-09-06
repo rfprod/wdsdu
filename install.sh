@@ -321,6 +321,78 @@ case $userChoice in
 		;;
 esac
 
+## install vscode
+printf "\n\n${YELLOW} - ${CYAN}Install vscode...${DEFAULT}\n\n"
+read -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless confirmed (y/n)?" -t $WAIT_TIMEOUT userChoice
+defaultUserChoice
+case $userChoice in
+	y|Y )
+		# notify user, and install
+		printf "\n ${LIGHT_CYAN}  >> installing vscode ${DEFAULT} \n\n"
+		# TODO: uncomment subsequent lines
+		#wget -qO - https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+		#sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+		#sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+		#sudo apt-get update
+		#sudo apt-get install code # or code-insiders
+
+		## TODO: install vscode packages
+		#code --install-extension editorconfig.editorconfig
+		#code --install-extension ionutvmi.path-autocomplete
+		#code --install-extension peterjausovec.vscode-docker
+		#code --install-extension atishay-jain.all-autocomplete
+		#code --install-extension mikestead.dotenv
+
+		;;
+	n|N )
+		# explicitly cancelled by user
+		printf "\n ${LIGHT_CYAN}  >> cancelled by user, user choice: $userChoice ${DEFAULT} \n"
+		;;
+	* )
+		# implicitly cancelled by user
+		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choice: ${RED}$userChoice ${DEFAULT} \n"
+		;;
+esac
+
+## install sublime stable
+printf "\n\n${YELLOW} - ${CYAN}Install sublime stable...${DEFAULT}\n\n"
+read -p "    > confirm, will NOT be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
+optionalUserChoice
+case $userChoice in
+	y|Y )
+		# notify user, and install
+		printf "\n ${LIGHT_CYAN}  >> installing sublime stable ${DEFAULT} \n\n"
+		# TODO: uncomment subsequent lines
+		#wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+		#echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+		#sudo apt update
+		#sudo apt install sublime-text
+
+		## TODO: install sublime extensions automatically
+		printf "\n${LIGHT_BLUE}You should install the following Sublime packages manually (install Package Control first via Sublime UI):${DEFAULT}\n"
+		printf "\n ${YELLOW}- ${LIGHT_BLUE}Package Control${DEFAULT}"
+		printf "\n ${YELLOW}- ${LIGHT_BLUE}All Autocomplete${DEFAULT}"
+		printf "\n ${YELLOW}- ${LIGHT_BLUE}Angular 2 Snippets (John Papa)${DEFAULT}"
+		printf "\n ${YELLOW}- ${LIGHT_BLUE}Babel${DEFAULT}"
+		printf "\n ${YELLOW}- ${LIGHT_BLUE}Dockerfile Syntax Highlighting${DEFAULT}"
+		printf "\n ${YELLOW}- ${LIGHT_BLUE}EditorConfig${DEFAULT}"
+		printf "\n ${YELLOW}- ${LIGHT_BLUE}Gitignored File Excluder${DEFAULT}"
+		printf "\n ${YELLOW}- ${LIGHT_BLUE}JavaScript Completions${DEFAULT}"
+		printf "\n ${YELLOW}- ${LIGHT_BLUE}JsFormat${DEFAULT}"
+		printf "\n ${YELLOW}- ${LIGHT_BLUE}ngx-html-syntax${DEFAULT}"
+		printf "\n ${YELLOW}- ${LIGHT_BLUE}SCSS${DEFAULT}"
+		printf "\n ${YELLOW}- ${LIGHT_BLUE}Typescript${DEFAULT}\n\n"
+		;;
+	n|N )
+		# explicitly cancelled by user
+		printf "\n ${LIGHT_CYAN}  >> cancelled by user, user choice: $userChoice ${DEFAULT} \n"
+		;;
+	* )
+		# implicitly cancelled by user
+		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choice: ${RED}$userChoice ${DEFAULT} \n"
+		;;
+esac
+
 ## install atom
 printf "\n\n${YELLOW} - ${CYAN}Install atom...${DEFAULT}\n\n"
 read -p "    > confirm, will NOT be installed in $WAIT_TIMEOUT seconds unless confirmed (y/n)?" -t $WAIT_TIMEOUT userChoice
@@ -349,76 +421,6 @@ case $userChoice in
 		#apm install language-jenkinsfile
 		#apm install editorconfig
 		#apm install emmet
-		;;
-	n|N )
-		# explicitly cancelled by user
-		printf "\n ${LIGHT_CYAN}  >> cancelled by user, user choice: $userChoice ${DEFAULT} \n"
-		;;
-	* )
-		# implicitly cancelled by user
-		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choice: ${RED}$userChoice ${DEFAULT} \n"
-		;;
-esac
-
-## install vscode
-printf "\n\n${YELLOW} - ${CYAN}Install vscode...${DEFAULT}\n\n"
-read -p "    > confirm, will NOT be installed in $WAIT_TIMEOUT seconds unless confirmed (y/n)?" -t $WAIT_TIMEOUT userChoice
-optionalUserChoice
-case $userChoice in
-	y|Y )
-		# notify user, and install
-		printf "\n ${LIGHT_CYAN}  >> installing vscode ${DEFAULT} \n\n"
-		# TODO: uncomment subsequent lines
-		#wget -qO - https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-		#sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
-		#sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-		#sudo apt-get update
-		#sudo apt-get install code # or code-insiders
-
-		## TODO: install vscode packages
-		#code --install-extension editorconfig.editorconfig
-		#code --install-extension ionutvmi.path-autocomplete
-		#code --install-extension peterjausovec.vscode-docker
-		#code --install-extension atishay-jain.all-autocomplete
-		;;
-	n|N )
-		# explicitly cancelled by user
-		printf "\n ${LIGHT_CYAN}  >> cancelled by user, user choice: $userChoice ${DEFAULT} \n"
-		;;
-	* )
-		# implicitly cancelled by user
-		printf "\n ${LIGHT_CYAN}  >> installation cancelled, invalid value, user choice: ${RED}$userChoice ${DEFAULT} \n"
-		;;
-esac
-
-## install sublime stable
-printf "\n\n${YELLOW} - ${CYAN}Install sublime stable...${DEFAULT}\n\n"
-read -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
-defaultUserChoice
-case $userChoice in
-	y|Y )
-		# notify user, and install
-		printf "\n ${LIGHT_CYAN}  >> installing sublime stable ${DEFAULT} \n\n"
-		# TODO: uncomment subsequent lines
-		#wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
-		#echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
-		#sudo apt update
-		#sudo apt install sublime-text
-
-		## TODO: install sublime extensions automatically
-		printf "\n${LIGHT_BLUE}You should install the following Sublime packages manually (install Package Control first via Sublime UI):${DEFAULT}\n"
-		printf "\n ${YELLOW}- ${LIGHT_BLUE}Package Control${DEFAULT}"
-		printf "\n ${YELLOW}- ${LIGHT_BLUE}All Autocomplete${DEFAULT}"
-		printf "\n ${YELLOW}- ${LIGHT_BLUE}Angular 2 Snippets (John Papa)${DEFAULT}"
-		printf "\n ${YELLOW}- ${LIGHT_BLUE}Babel${DEFAULT}"
-		printf "\n ${YELLOW}- ${LIGHT_BLUE}Dockerfile Syntax Highlighting${DEFAULT}"
-		printf "\n ${YELLOW}- ${LIGHT_BLUE}EditorConfig${DEFAULT}"
-		printf "\n ${YELLOW}- ${LIGHT_BLUE}Gitignored File Excluder${DEFAULT}"
-		printf "\n ${YELLOW}- ${LIGHT_BLUE}JavaScript Completions${DEFAULT}"
-		printf "\n ${YELLOW}- ${LIGHT_BLUE}JsFormat${DEFAULT}"
-		printf "\n ${YELLOW}- ${LIGHT_BLUE}ngx-html-syntax${DEFAULT}"
-		printf "\n ${YELLOW}- ${LIGHT_BLUE}SCSS${DEFAULT}"
-		printf "\n ${YELLOW}- ${LIGHT_BLUE}Typescript${DEFAULT}\n\n"
 		;;
 	n|N )
 		# explicitly cancelled by user

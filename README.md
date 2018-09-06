@@ -30,7 +30,7 @@ Can be used to deploy Debian/Ubuntu web-development environment, which includes 
   - [`typescript`](https://www.typescriptlang.org/)
 - [`Atom`](https://atom.io/)
 - [`VSCode`](https://code.visualstudio.com/)
-- [`Sublime Text`](https://www.sublimetext.com/3) (TODO: install packages automatically, for now should be done manually)
+- [`Sublime Text`](https://www.sublimetext.com/3)
 
 ### Docker documentation
 
