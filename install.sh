@@ -338,10 +338,12 @@ case $userChoice in
 
 		## TODO: install vscode packages
 		#code --install-extension editorconfig.editorconfig
-		#code --install-extension ionutvmi.path-autocomplete
+		#code --install-extension christian-kohler.path-intellisense
+		#code --install-extension christian-kohler.npm-intellisense
 		#code --install-extension peterjausovec.vscode-docker
 		#code --install-extension atishay-jain.all-autocomplete
 		#code --install-extension mikestead.dotenv
+		#code --install-extension angular.ng-template
 
 		;;
 	n|N )
