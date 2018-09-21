@@ -344,6 +344,7 @@ case $userChoice in
 		#code --install-extension atishay-jain.all-autocomplete
 		#code --install-extension mikestead.dotenv
 		#code --install-extension angular.ng-template
+		#code --install-extension natewallace.angular2-inline
 
 		;;
 	n|N )
