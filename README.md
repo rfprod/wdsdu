@@ -19,18 +19,21 @@ Can be used to deploy Debian/Ubuntu web-development environment, which includes 
 - [`Heroku`](https://www.heroku.com/)
 - `Global NPM dependencies`:
   - [`@angular/cli`](https://cli.angular.io/)
+  - [`@compodoc/compodoc`](https://compodoc.app/)
+  - [`@nestjs/cli`](https://docs.nestjs.com/)
+  - [`@ngxs/cli`](https://www.ngxs.io/plugins/cli)
+  - [`@nrwl/schematics`](https://nrwl.io/)
+  - [`cz-conventional-changelog`](https://github.com/commitizen/cz-conventional-changelog)
+  - [`jscodeshift`](https://github.com/facebook/jscodeshift)
   - [`firebase-tools`](https://firebase.google.com/docs/cli/)
-  - [`git-stats`](https://github.com/IonicaBizau/git-stats)
-  - [`git-stats-importer`](https://github.com/IonicaBizau/git-stats-importer)
   - [`gulp-cli`](https://github.com/gulpjs/gulp-cli)
   - [`n`](https://github.com/tj/n)
   - [`npm-check-updates`](https://github.com/tjunnone/npm-check-updates)
   - [`svgo`](https://github.com/svg/svgo)
   - [`swagger`](https://swagger.io/)
   - [`typescript`](https://www.typescriptlang.org/)
-- [`Atom`](https://atom.io/)
+  - [`yarn`](https://yarnpkg.com/)
 - [`VSCode`](https://code.visualstudio.com/)
-- [`Sublime Text`](https://www.sublimetext.com/3)
 
 ### Docker documentation
 

@@ -15,10 +15,10 @@ charset = utf-8
 
 # 4 space indentation for markup and css
 [*.{html,css,scss}]
-indent_style = tab
+indent_style = space
 indent_size = 4
 
 # 2 space indentation for code
 [*.{js,ts,json,sh,eslintignore,gitignore}]
-indent_style = tab
+indent_style = space
 indent_size = 2
