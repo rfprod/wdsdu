@@ -1,7 +1,9 @@
-# colors
-source util-echo_colors.sh
+##
+# Colors:
 # DEFAULT, BLACK, DARK_GRAY, RED, LIGHT_RED, GREEN, LIGHT_GREEN, BROWN, YELLOW,
 # BLUE, LIGHT_BLUE, PURPLE, LIGHT_PURPLE, CYAN, LIGHT_CYAN, LIGHT_GRAY, WHITE
+##
+source colors.sh
 
 # user input timeout
 WAIT_TIMEOUT=6
@@ -40,6 +42,13 @@ function notifyUserOfCancelledInstallation() {
   printf "\n ${LIGHT_CYAN}  >> cancelled by user, user choice: ${RED}${1} ${DEFAULT} \n\n"
 }
 
+function checkIfPackageIsInstalled () {
+  printf "\n ${YELLOW}  >> checking if package ${CYAN}${1}${YELLOW} is installed ${DEFAULT} \n\n"
+  PACKAGE_EXISTS=$(dpkg -s $1)
+  echo "${PACKAGE_EXISTS}"
+  printf "\n\n"
+}
+
 notifyUserOfNextStep "This script will install dependencies required for development"
 
 ## update apt
@@ -50,6 +59,10 @@ notifyUserOfPrerequisiteInstallation "Updating apt"
 ## install dependencies required for subsequent installations
 notifyUserOfPrerequisiteInstallation "Installing dependencies required for subsequent installations"
 # TODO: uncomment subsequent lines
+checkIfPackageIsInstalled apt-transport-https
+checkIfPackageIsInstalled ca-certificates
+checkIfPackageIsInstalled curl
+checkIfPackageIsInstalled software-properties-common
 #sudo apt install -y \
 #  apt-transport-https \
 #  ca-certificates \
@@ -64,6 +77,8 @@ case $userChoice in
   y|Y )
     # notify user, and install
     notifyUserOfInstallation "installing guake, and tmux"
+    checkIfPackageIsInstalled guake
+    checkIfPackageIsInstalled tmux
     # TODO: uncomment subsequent line
     #sudo apt install -y guake tmux
     ;;
@@ -85,6 +100,7 @@ case $userChoice in
   y|Y )
     # notify user, and install
     notifyUserOfInstallation "installing xfreerdp"
+    checkIfPackageIsInstalled freerdp-x11
     # TODO: uncomment subsequent line
     #sudo apt install -y freerdp-x11
     ;;
@@ -106,6 +122,7 @@ case $userChoice in
   y|Y )
     # notify user, and install
     notifyUserOfInstallation "installing chromium-browser"
+    checkIfPackageIsInstalled chromium-browser
     # TODO: uncomment subsequent line
     #sudo apt install -y chromium-browser
     ;;
@@ -127,6 +144,7 @@ case $userChoice in
   y|Y )
     # notify user, and install
     notifyUserOfInstallation "installing google-chrome-stable"
+    checkIfPackageIsInstalled google-chrome-stable
     # TODO: uncomment subsequent lines
     #wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
     #echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list
@@ -152,6 +170,7 @@ case $userChoice in
     # notify user, and install
     notifyUserOfInstallation "installing git"
     # TODO: uncomment subsequent line
+    checkIfPackageIsInstalled git
     #sudo apt install -y git
     ;;
   n|N )
@@ -172,6 +191,7 @@ case $userChoice in
   y|Y )
     # notify user, and install
     notifyUserOfInstallation "installing docker"
+    checkIfPackageIsInstalled docker-ce
     # TODO: uncomment subsequent lines
     #sudo apt remove -y docker docker-engine docker.io
     #curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -201,6 +221,7 @@ case $userChoice in
   y|Y )
     # notify user, and install
     notifyUserOfInstallation "installing heroku cli"
+    printf "${RED}TODO: check if snap package is installed${DEFAULT} \n\n"
     # TODO: uncomment subsequent line
     #sudo snap install heroku --classic
     ;;
@@ -223,6 +244,9 @@ case $userChoice in
     # notify user, and install
     notifyUserOfInstallation "installing nodejs v8, build-essential, and updating npm"
     # TODO: uncomment subsequent lines
+    checkIfPackageIsInstalled nodejs
+    checkIfPackageIsInstalled build-essential
+    checkIfPackageIsInstalled npm
     #curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
     #sudo apt install -y nodejs
     #sudo apt install -y build-essential
@@ -367,7 +391,7 @@ case $userChoice in
       printf " ${YELLOW} > ${LIGHT_CYAN} dependency check: ${GREEN}yarn installed ${DEFAULT}\n"
     else
       printf " ${YELLOW} > ${LIGHT_CYAN} dependency check: ${LIGHT_RED}yarn is not installed ${DEFAULT}\n"
-      # TODO: uncomment subsequent line
+      # TODO: uncomment subsequent linenodejs
       #sudo npm install -g yarn@latest
     fi
     ;;
@@ -389,6 +413,7 @@ case $userChoice in
   y|Y )
     # notify user, and install
     notifyUserOfInstallation "installing vscode"
+    checkIfPackageIsInstalled code
     # TODO: uncomment subsequent lines
     #wget -qO - https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
     #sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
