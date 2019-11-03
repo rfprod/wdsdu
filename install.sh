@@ -112,11 +112,11 @@ function checkIfGlobalNpmDependencyIsInstalledAndInstall () {
   DEPENDENCY_NAME=$1
   DEPS=$(sudo npm list -g --depth=0)
   if grep -q ${DEPENDENCY_NAME}@ <<<$DEPS; then
-    printf " ${YELLOW} > ${LIGHT_CYAN} dependency check: ${GREEN}@${DEPENDENCY_NAME} installed ${DEFAULT}\n"
+    printf " ${YELLOW} > ${LIGHT_CYAN} dependency check: ${GREEN}${DEPENDENCY_NAME} installed ${DEFAULT}\n"
   else
-    printf " ${YELLOW} > ${LIGHT_CYAN} dependency check: ${LIGHT_RED}@${DEPENDENCY_NAME} is not installed ${DEFAULT}\n"
+    printf " ${YELLOW} > ${LIGHT_CYAN} dependency check: ${LIGHT_RED}${DEPENDENCY_NAME} is not installed ${DEFAULT}\n"
 
-    sudo npm install -g "@${DEPENDENCY_NAME}@latest"
+    sudo npm install -g "${DEPENDENCY_NAME}@latest"
   fi
 }
 
@@ -387,21 +387,21 @@ case $userChoice in
 
     notifyOfInstalledGlobalNpmDependencies
 
-    checkIfGlobalNpmDependencyIsInstalledAndInstall angular/cli
-    checkIfGlobalNpmDependencyIsInstalledAndInstall compodoc/compodoc
-    checkIfGlobalNpmDependencyIsInstalledAndInstall nestjs/cli
-    checkIfGlobalNpmDependencyIsInstalledAndInstall ngxs/cli
-    checkIfGlobalNpmDependencyIsInstalledAndInstall nrwl/schematics
-    checkIfGlobalNpmDependencyIsInstalledAndInstall cz-conventional-changelog
-    checkIfGlobalNpmDependencyIsInstalledAndInstall jscodeshift
-    checkIfGlobalNpmDependencyIsInstalledAndInstall firebase-tools
-    checkIfGlobalNpmDependencyIsInstalledAndInstall gulp-cli
-    checkIfGlobalNpmDependencyIsInstalledAndInstall n
-    checkIfGlobalNpmDependencyIsInstalledAndInstall npm-check-updates
-    checkIfGlobalNpmDependencyIsInstalledAndInstall svgo
-    checkIfGlobalNpmDependencyIsInstalledAndInstall swagger
-    checkIfGlobalNpmDependencyIsInstalledAndInstall typescript
-    checkIfGlobalNpmDependencyIsInstalledAndInstall yarn
+    checkIfGlobalNpmDependencyIsInstalledAndInstall "@angular/cli"
+    checkIfGlobalNpmDependencyIsInstalledAndInstall "@compodoc/compodoc"
+    checkIfGlobalNpmDependencyIsInstalledAndInstall "@nestjs/cli"
+    checkIfGlobalNpmDependencyIsInstalledAndInstall "@ngxs/cli"
+    checkIfGlobalNpmDependencyIsInstalledAndInstall "@nrwl/schematics"
+    checkIfGlobalNpmDependencyIsInstalledAndInstall "cz-conventional-changelog"
+    checkIfGlobalNpmDependencyIsInstalledAndInstall "jscodeshift"
+    checkIfGlobalNpmDependencyIsInstalledAndInstall "firebase-tools"
+    checkIfGlobalNpmDependencyIsInstalledAndInstall "gulp-cli"
+    checkIfGlobalNpmDependencyIsInstalledAndInstall "n"
+    checkIfGlobalNpmDependencyIsInstalledAndInstall "npm-check-updates"
+    checkIfGlobalNpmDependencyIsInstalledAndInstall "svgo"
+    checkIfGlobalNpmDependencyIsInstalledAndInstall "swagger"
+    checkIfGlobalNpmDependencyIsInstalledAndInstall "typescript"
+    checkIfGlobalNpmDependencyIsInstalledAndInstall "yarn"
     ;;
   n|N )
     ## explicitly cancelled by user
