@@ -388,6 +388,8 @@ case $userChoice in
     notifyOfInstalledGlobalNpmDependencies
 
     checkIfGlobalNpmDependencyIsInstalledAndInstall "@angular/cli"
+    checkIfGlobalNpmDependencyIsInstalledAndInstall "bazel"
+    checkIfGlobalNpmDependencyIsInstalledAndInstall "clang-format"
     checkIfGlobalNpmDependencyIsInstalledAndInstall "@compodoc/compodoc"
     checkIfGlobalNpmDependencyIsInstalledAndInstall "@nestjs/cli"
     checkIfGlobalNpmDependencyIsInstalledAndInstall "@ngxs/cli"
@@ -435,26 +437,30 @@ case $userChoice in
       sudo apt-get install code
 
       # install vscode packages
-      code --install-extension angular.ng-template
-      code --install-extension johnpapa.angular2
-      code --install-extension natewallace.angular2-inline
-      code --install-extension atishay-jain.all-autocomplete
-      code --install-extension johnpapa.angular-essentials
       code --install-extension nrwl.angular-console
-      code --install-extension christian-kohler.path-intellisense
-      code --install-extension johnpapa.vscode-peacock
+      code --install-extension angular.ng-template
+      code --install-extension johnpapa.angular-essentials
       code --install-extension pkief.material-icon-theme
-      code --install-extension editorconfig.editorconfig
-      code --install-extension metatype.copilot-vscode
+      code --install-extension atishay-jain.all-autocomplete
+      code --install-extension johnpapa.vscode-peacock
       code --install-extension pmneo.tsimporter
-      code --install-extension eg2.vscode-npm-script
-      code --install-extension mikestead.dotenv
+      code --install-extension christian-kohler.path-intellisense
+      code --install-extension metatype.copilot-vscode
       code --install-extension sadesyllas.vscode-workspace-switcher
-      code --install-extension esbenp.prettier-vscode
-      code --install-extension ms-azuretools.vscode-docker
+      code --install-extension editorconfig.editorconfig
+      code --install-extension mikestead.dotenv
       code --install-extension shd101wyy.markdown-preview-enhanced
-      code --install-extension ghaschel.vscode-angular-html
+      code --install-extension eg2.vscode-npm-script
+      code --install-extension ms-azuretools.vscode-docker
+      code --install-extension esbenp.prettier-vscode
       code --install-extension ms-vscode.vscode-typescript-tslint-plugin
+      code --install-extension ghaschel.vscode-angular-html
+      code --install-extension natewallace.angular2-inline
+      code --install-extension johnpapa.angular2
+      code --install-extension zxh404.vscode-proto3
+      code --install-extension plex.vscode-protolint
+      code --install-extension xaver.clang-format
+      code --install-extension devondcarew.bazel-code
     else
       printf "\n
         ${GREEN} PACKAGE EXISTS\n
