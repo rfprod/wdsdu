@@ -19,6 +19,7 @@ Can be used to deploy Debian/Ubuntu web-development environment, which includes 
 - [`Heroku`](https://www.heroku.com/)
 - `Global NPM dependencies`:
   - [`@angular/cli`](https://cli.angular.io/)
+  - [`clang-format`](https://github.com/angular/clang-format)
   - [`@compodoc/compodoc`](https://compodoc.app/)
   - [`@nestjs/cli`](https://docs.nestjs.com/)
   - [`@ngxs/cli`](https://www.ngxs.io/plugins/cli)
