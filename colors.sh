@@ -1,5 +1,8 @@
-# colors definitions
+#!/bin/bash
 
+##
+# Color definitions.
+#
 # Black        0;30     Dark Gray     1;30
 # Red          0;31     Light Red     1;31
 # Green        0;32     Light Green   1;32
@@ -8,6 +11,9 @@
 # Purple       0;35     Light Purple  1;35
 # Cyan         0;36     Light Cyan    1;36
 # Light Gray   0;37     White         1;37
+##
+
+# shellcheck disable=SC2034
 
 DEFAULT='\033[0m'
 BLACK='\033[0;30m'
@@ -26,3 +32,66 @@ CYAN='\033[0;36m'
 LIGHT_CYAN='\033[1;36m'
 LIGHT_GRAY='\033[0;37m'
 WHITE='\033[1;37m'
+
+REGISTERED_COLOR_NAMES=(
+  DEFAULT
+  BLACK
+  DARK_GRAY
+  RED
+  LIGHT_RED
+  GREEN
+  LIGHT_GREEN
+  BROWN
+  YELLOW
+  BLUE
+  LIGHT_BLUE
+  PURPLE
+  LIGHT_PURPLE
+  CYAN
+  LIGHT_CYAN
+  LIGHT_GRAY
+  WHITE
+)
+
+# shellcheck disable=SC2034
+REGISTERED_COLOR_VARS=(
+  "$DEFAULT"
+  "$BLACK"
+  "$DARK_GRAY"
+  "$RED"
+  "$LIGHT_RED"
+  "$GREEN"
+  "$LIGHT_GREEN"
+  "$BROWN"
+  "$YELLOW"
+  "$BLUE"
+  "$LIGHT_BLUE"
+  "$PURPLE"
+  "$LIGHT_PURPLE"
+  "$CYAN"
+  "$LIGHT_CYAN"
+  "$LIGHT_GRAY"
+  "$WHITE"
+)
+
+reportSupportedColors() {
+  local TITLE="<< COLORS >>"
+  printf "
+    ${LIGHT_BLUE} %s ${DEFAULT}\n" "$TITLE"
+
+  ##
+  # Prints registered colors.
+  ##
+  for REGISTERED_COLOR_NAME in "${REGISTERED_COLOR_NAMES[@]}"; do printf "
+      ${DEFAULT} - ${!REGISTERED_COLOR_NAME}%s${DEFAULT} = ${!REGISTERED_COLOR_NAME}%s${DEFAULT}" "$REGISTERED_COLOR_NAME" "${!REGISTERED_COLOR_NAME}"; done
+
+  local INFO="Use this colors in other module related scripts like tools/shell/lint.sh, tools/shell/test.sh etc."
+  printf "\n\n${DEFAULT} %s\n\n" "$INFO"
+}
+
+##
+# Colors usage.
+##
+if [ "$1" = "?" ]; then
+  reportSupportedColors
+fi
