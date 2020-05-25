@@ -413,11 +413,8 @@ y | Y)
   checkIfGlobalNpmDependencyIsInstalledAndInstall "cz-conventional-changelog"
   checkIfGlobalNpmDependencyIsInstalledAndInstall "jscodeshift"
   checkIfGlobalNpmDependencyIsInstalledAndInstall "firebase-tools"
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "gulp-cli"
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "n"
   checkIfGlobalNpmDependencyIsInstalledAndInstall "npm-check-updates"
   checkIfGlobalNpmDependencyIsInstalledAndInstall "svgo"
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "swagger"
   checkIfGlobalNpmDependencyIsInstalledAndInstall "typescript"
   checkIfGlobalNpmDependencyIsInstalledAndInstall "yarn"
   ;;
@@ -469,6 +466,7 @@ y | Y)
     code --install-extension shd101wyy.markdown-preview-enhanced
     code --install-extension eg2.vscode-npm-script
     code --install-extension ms-azuretools.vscode-docker
+    code --install-extension dbaeumer.vscode-eslint
     code --install-extension esbenp.prettier-vscode
     code --install-extension ms-vscode.vscode-typescript-tslint-plugin
     code --install-extension ghaschel.vscode-angular-html
@@ -478,6 +476,10 @@ y | Y)
     code --install-extension plex.vscode-protolint
     code --install-extension xaver.clang-format
     code --install-extension devondcarew.bazel-code
+    code --install-extension foxundermoon.shell-format
+    code --install-extension timonwong.shellcheck
+    code --install-extension stepsize.tech-debt-tracker
+    code --install-extension stylelint.vscode-stylelint
   else
     TITLE="PACKAGE EXISTS"
     printf "\n
