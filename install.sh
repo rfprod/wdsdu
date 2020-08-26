@@ -355,14 +355,14 @@ n | N)
   ;;
 esac
 
-## install nodejs v10, and build essential for compiling and installing native addons
-notifyUserOfNextStep "Install nodejs v10, and build-essential, and update npm to latest version"
+## install nodejs v14, and build essential for compiling and installing native addons
+notifyUserOfNextStep "Install nodejs v14, and build-essential, and update npm to latest version"
 read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
   ## notify user, and install
-  notifyUserOfInstallation "installing nodejs v10, build-essential, and updating npm"
+  notifyUserOfInstallation "installing nodejs v14, build-essential, and updating npm"
   NODE_EXISTS=$(resolveIfPackageIsInstalled nodejs)
   if [ -z "${NODE_EXISTS}" ]; then
     TITLE="PACKAGE DOES NOT EXIST"
@@ -371,7 +371,7 @@ y | Y)
         ${LIGHT_GREEN}installing package...\n
         ${DEFAULT}\n\n" "$TITLE"
 
-    curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+    curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
     sudo apt install -y nodejs
     checkIfPackageIsInstalledAndInstall build-essential
     sudo npm install -g npm
@@ -403,20 +403,20 @@ y | Y)
 
   notifyOfInstalledGlobalNpmDependencies
 
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "@angular/cli"
   checkIfGlobalNpmDependencyIsInstalledAndInstall "bazel"
   checkIfGlobalNpmDependencyIsInstalledAndInstall "clang-format"
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "@compodoc/compodoc"
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "@nestjs/cli"
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "@ngxs/cli"
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "@nrwl/schematics"
   checkIfGlobalNpmDependencyIsInstalledAndInstall "cz-conventional-changelog"
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "jscodeshift"
   checkIfGlobalNpmDependencyIsInstalledAndInstall "firebase-tools"
+  checkIfGlobalNpmDependencyIsInstalledAndInstall "jscodeshift"
   checkIfGlobalNpmDependencyIsInstalledAndInstall "npm-check-updates"
   checkIfGlobalNpmDependencyIsInstalledAndInstall "svgo"
   checkIfGlobalNpmDependencyIsInstalledAndInstall "typescript"
   checkIfGlobalNpmDependencyIsInstalledAndInstall "yarn"
+  checkIfGlobalNpmDependencyIsInstalledAndInstall "@angular/cli"
+  checkIfGlobalNpmDependencyIsInstalledAndInstall "@nestjs/cli"
+  checkIfGlobalNpmDependencyIsInstalledAndInstall "@ngxs/cli"
+  checkIfGlobalNpmDependencyIsInstalledAndInstall "@nrwl/cli"
+  checkIfGlobalNpmDependencyIsInstalledAndInstall "@compodoc/compodoc"
   ;;
 n | N)
   ## explicitly cancelled by user
@@ -459,7 +459,6 @@ y | Y)
     code --install-extension johnpapa.vscode-peacock
     code --install-extension pmneo.tsimporter
     code --install-extension christian-kohler.path-intellisense
-    code --install-extension metatype.copilot-vscode
     code --install-extension sadesyllas.vscode-workspace-switcher
     code --install-extension editorconfig.editorconfig
     code --install-extension mikestead.dotenv
