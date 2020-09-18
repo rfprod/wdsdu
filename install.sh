@@ -56,6 +56,32 @@ notifyUserOfInstallation() {
 }
 
 ##
+# Notifies user of error.
+##
+notifyUserOfError() {
+  printf "\n
+    ${RED}%s
+    ${DEFAULT}" "${1}"
+}
+
+##
+# Notifies user of success.
+##
+notifyUserOfSuccess() {
+  printf "\n
+    ${GREEN}%s
+    ${DEFAULT}" "${1}"
+}
+
+##
+# Notifies user of action.
+##
+notifyUserOfAction() {
+  printf "
+    ${DEFAULT}> ${LIGHT_CYAN} %s${DEFAULT}" "${1}"
+}
+
+##
 # Notifies user of cancelled installation.
 ##
 notifyUserOfCancelledInstallation() {
@@ -73,19 +99,13 @@ checkIfPackageIsInstalledAndInstall() {
     ${DEFAULT}\n\n" "${1}"
   PACKAGE_EXISTS=$(dpkg -s "$1")
   if [ -z "${PACKAGE_EXISTS}" ]; then
-    local TITLE="PACKAGE DOES NOT EXIST"
-    printf "\n
-      ${RED}%s
-      ${DEFAULT}\n
-      installing package...
-      \n\n" "$TITLE"
+    notifyUserOfError "PACKAGE DOES NOT EXIST"
+    notifyUserOfAction "installing package..."
+    printf "\n\n"
     sudo apt install -y "$1"
   else
-    local TITLE="PACKAGE EXISTS"
-    printf "\n
-      ${GREEN}%s
-      ${PACKAGE_EXISTS}\n
-      ${DEFAULT}\n" "$TITLE"
+    notifyUserOfSuccess "PACKAGE EXISTS"
+    printf "\n\n"
   fi
 }
 
@@ -102,11 +122,9 @@ resolveIfPackageIsInstalled() {
 ##
 notifyOfInstalledGlobalNpmDependencies() {
   DEPS=$(sudo npm list -g --depth=0)
-  local TITLE="installed dependencies:"
-  printf "\n
-    ${YELLOW} > ${LIGHT_CYAN} %s${DEFAULT}\n
-    ${DEPS}\n
-    ${DEFAULT}\n" "$TITLE"
+  notifyUserOfSuccess "Installed dependencies:"
+  # shellcheck disable=SC2059
+  printf "${DEPS}\n"
 }
 
 ##
@@ -115,13 +133,13 @@ notifyOfInstalledGlobalNpmDependencies() {
 checkIfGlobalNpmDependencyIsInstalledAndInstall() {
   DEPENDENCY_NAME=$1
   DEPS=$(sudo npm list -g --depth=0)
-  local TITLE="dependency check"
+  notifyUserOfAction "dependency check"
   if grep -q "${DEPENDENCY_NAME}"@ <<<"$DEPS"; then
     printf "
-      ${YELLOW} > ${LIGHT_CYAN} %s: ${GREEN}${DEPENDENCY_NAME} installed ${DEFAULT}\n" "$TITLE"
+      ${GREEN}+ %s installed ${DEFAULT}\n" "$DEPENDENCY_NAME"
   else
     printf "
-      ${YELLOW} > ${LIGHT_CYAN} %s: ${LIGHT_RED}${DEPENDENCY_NAME} is not installed ${DEFAULT}\n" "$TITLE"
+      ${LIGHT_RED}- %s is not installed ${DEFAULT}\n" "$DEPENDENCY_NAME"
 
     sudo npm install -g "${DEPENDENCY_NAME}@latest"
   fi
@@ -133,11 +151,9 @@ checkIfGlobalNpmDependencyIsInstalledAndInstall() {
 resolveIfSNAPPackageIsInstalled() {
   SNAP_EXISTS=$(snap find "$1")
   if [ "${SNAP_EXISTS}" == "No matching snaps for ""${1}""" ]; then
-    local TITLE="PACKAGE DOES NOT EXIST"
-    printf "\n
-      ${RED}%s${DEFAULT}\n
-      installing package...
-      ${DEFAULT}\n\n" "$TITLE"
+    notifyUserOfError "PACKAGE DOES NOT EXIST"
+    notifyUserOfAction "installing package..."
+    printf "\n\n"
   else
     echo "${SNAP_EXISTS}"
   fi
