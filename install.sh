@@ -6,6 +6,11 @@
 source colors.sh ''
 
 ##
+# Colors.
+##
+source install-avd.sh ''
+
+##
 # User input timeout.
 ##
 WAIT_TIMEOUT=6
@@ -352,28 +357,6 @@ n | N)
   ;;
 esac
 
-## install flutter
-notifyUserOfNextStep "Install flutter"
-read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
-defaultUserChoice
-case $userChoice in
-y | Y)
-  ## notify user, and install
-  notifyUserOfInstallation "installing flutter"
-  checkIfPackageIsInstalledAndInstall snapd
-  checkIfSNAPPackageIsInstalledAndInstall "flutter"
-  flutter doctor -v
-  ;;
-n | N)
-  ## explicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
-  ;;
-*)
-  ## implicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
-  ;;
-esac
-
 ## install nodejs v14, and build essential for compiling and installing native addons
 notifyUserOfNextStep "Install nodejs v14, and build-essential, and update npm to latest version"
 read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
@@ -436,6 +419,29 @@ y | Y)
   checkIfGlobalNpmDependencyIsInstalledAndInstall "@ngxs/cli"
   checkIfGlobalNpmDependencyIsInstalledAndInstall "@nrwl/cli"
   checkIfGlobalNpmDependencyIsInstalledAndInstall "@compodoc/compodoc"
+  ;;
+n | N)
+  ## explicitly cancelled by user
+  notifyUserOfCancelledInstallation "${userChoice}"
+  ;;
+*)
+  ## implicitly cancelled by user
+  notifyUserOfCancelledInstallation "${userChoice}"
+  ;;
+esac
+
+## install flutter + avd
+notifyUserOfNextStep "Install flutter + avd"
+read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
+defaultUserChoice
+case $userChoice in
+y | Y)
+  ## notify user, and install
+  notifyUserOfInstallation "installing flutter"
+  checkIfPackageIsInstalledAndInstall snapd
+  checkIfSNAPPackageIsInstalledAndInstall "flutter"
+  installAvd
+  flutter doctor -v
   ;;
 n | N)
   ## explicitly cancelled by user

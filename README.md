@@ -14,9 +14,8 @@ Can be used to deploy Debian/Ubuntu web-development environment, which includes 
 - [`Chromium browser`](https://www.chromium.org/)
 - [`Google Chrome Stable`](https://www.google.com/chrome/index.html)
 - [`Git`](https://git-scm.com/)
-- [`NodeJS v14` + `build essential` + `latest npm`](https://nodejs.org/en/)
 - [`Docker`](https://www.docker.com/)
-- [`Flutter`](https://flutter.dev/)
+- [`NodeJS v14` + `build essential` + `latest npm`](https://nodejs.org/en/)
 - `Global NPM dependencies`:
   - [`bazel`](https://bazel.build/)
   - [`clang-format`](https://github.com/angular/clang-format)
@@ -32,7 +31,8 @@ Can be used to deploy Debian/Ubuntu web-development environment, which includes 
   - [`@ngxs/cli`](https://www.ngxs.io/plugins/cli)
   - [`@nrwl/cli`](https://cli.angular.io/)
   - [`@compodoc/compodoc`](https://compodoc.app/)
-- [`VSCode`](https://code.visualstudio.com/)
+- [`Flutter`](https://flutter.dev/)
+- [`VsCode`](https://code.visualstudio.com/)
 
 ### Docker documentation
 
