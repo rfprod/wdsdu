@@ -2,7 +2,7 @@
 
 ## Overview
 
-DevSetupDebianUnuntu - an installation script and instructions for Debian/Ubuntu web-development environment deployment.
+An installation script and instructions for Debian/Ubuntu web-development environment deployment.
 
 ### Application
 
@@ -16,7 +16,7 @@ Can be used to deploy Debian/Ubuntu web-development environment, which includes 
 - [`Git`](https://git-scm.com/)
 - [`NodeJS v14` + `build essential` + `latest npm`](https://nodejs.org/en/)
 - [`Docker`](https://www.docker.com/)
-- [`Heroku`](https://www.heroku.com/)
+- [`Flutter`](https://flutter.dev/)
 - `Global NPM dependencies`:
   - [`bazel`](https://bazel.build/)
   - [`clang-format`](https://github.com/angular/clang-format)
@@ -40,10 +40,9 @@ Can be used to deploy Debian/Ubuntu web-development environment, which includes 
 * [`Docker: Engine command-line reference`](https://docs.docker.com/engine/reference/commandline/docker/)
 * [`Docker: Configure and use Docker`](https://docs.docker.com/engine/reference/commandline/docker/)
 
-### Heroku documentation
+### Flutter documentation
 
-* [`Heroku Devcenter: Getting started with nodejs`](https://devcenter.heroku.com/articles/getting-started-with-nodejs)
-* [`Heroku Elements: Addons: Mongolab`](https://elements.heroku.com/addons/mongolab)
+* [`Flutter: documentation`](https://flutter.dev/docs)
 
 ### Firebase documentation
 

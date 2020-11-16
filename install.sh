@@ -128,7 +128,7 @@ notifyOfInstalledGlobalNpmDependencies() {
 }
 
 ##
-# Chacks if global NPM dependency is installed.
+# Checks if global NPM dependency is installed.
 ##
 checkIfGlobalNpmDependencyIsInstalledAndInstall() {
   DEPENDENCY_NAME=$1
@@ -152,8 +152,24 @@ resolveIfSNAPPackageIsInstalled() {
   SNAP_EXISTS=$(snap find "$1")
   if [ "${SNAP_EXISTS}" == "No matching snaps for ""${1}""" ]; then
     notifyUserOfError "PACKAGE DOES NOT EXIST"
+    printf "\n\n"
+  else
+    echo "${SNAP_EXISTS}"
+  fi
+}
+
+##
+# Checks if snap package is installed.
+##
+checkIfSNAPPackageIsInstalledAndInstall() {
+  DEPENDENCY_NAME=$1
+  SNAP_EXISTS=$(snap find "$DEPENDENCY_NAME")
+  if [ "${SNAP_EXISTS}" == "No matching snaps for ""${DEPENDENCY_NAME}""" ]; then
+    notifyUserOfError "PACKAGE DOES NOT EXIST"
     notifyUserOfAction "installing package..."
     printf "\n\n"
+
+    sudo snap install "$DEPENDENCY_NAME" --classic
   else
     echo "${SNAP_EXISTS}"
   fi
@@ -215,14 +231,14 @@ n | N)
 esac
 
 ## install chromium-browser
-notifyUserOfNextStep "Install chromium-browser"
+notifyUserOfNextStep "Install chromium"
 read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
   ## notify user, and install
   notifyUserOfInstallation "installing chromium-browser"
-  checkIfPackageIsInstalledAndInstall chromium-browser
+  checkIfSNAPPackageIsInstalledAndInstall "chromium"
   ;;
 n | N)
   ## explicitly cancelled by user
@@ -336,30 +352,17 @@ n | N)
   ;;
 esac
 
-## install heroku cli
-notifyUserOfNextStep "Install heroku cli"
+## install flutter
+notifyUserOfNextStep "Install flutter"
 read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
   ## notify user, and install
-  notifyUserOfInstallation "installing heroku cli"
+  notifyUserOfInstallation "installing flutter"
   checkIfPackageIsInstalledAndInstall snapd
-  HEROKU_EXISTS=$(resolveIfSNAPPackageIsInstalled heroku)
-  if [ -z "${HEROKU_EXISTS}" ]; then
-    TITLE="PACKAGE DOES NOT EXIST"
-    printf "\n
-        ${RED}%s\n
-        ${LIGHT_GREEN}installing package...\n
-        ${DEFAULT}\n\n" "$TITLE"
-    sudo snap install heroku --classic
-  else
-    TITLE="PACKAGE EXISTS"
-    printf "\n
-        ${GREEN}%s\n
-        ${HEROKU_EXISTS}\n
-        ${DEFAULT}\n\n" "$TITLE"
-  fi
+  checkIfSNAPPackageIsInstalledAndInstall "flutter"
+  flutter doctor -v
   ;;
 n | N)
   ## explicitly cancelled by user
