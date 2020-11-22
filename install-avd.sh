@@ -100,7 +100,7 @@ installAvd() {
   notifyUserOfNextStep "Downloading (if needed), and unpacking Android SDK Tools"
   sudo apt install wget unzip
   if [ ! -f "${SDK_ZIP_PATH}" ]; then
-    wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip -O "${SDK_ZIP_PATH}"
+    wget https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip -O "${SDK_ZIP_PATH}"
   fi
   unzip "${SDK_ZIP_PATH}" -d "${HOME}/Downloads"
 
@@ -139,7 +139,11 @@ installAvd() {
 
   # install sdk tools
   notifyUserOfNextStep "Installing Android SDK Platform 25, Android SDK Build-Tools 25.0.2 or later, Android Support Repository, Google Repository"
-  sudo "$ANDROID_HOME"/tools/bin/sdkmanager "tools" "platform-tools" "platforms;android-25" "build-tools;25.0.2" "extras;android;m2repository" "extras;google;m2repository"
+  sudo "$ANDROID_HOME"/tools/bin/sdkmanager --install "tools" "platform-tools" "platforms;android-29" "build-tools;28.0.2" "extras;android;m2repository" "extras;google;m2repository"
+
+  # batch accept licenses
+  notifyUserOfNextStep "Sdk manager: batch accept licenses"
+  yes | sudo "$ANDROID_HOME"/tools/bin/sdkmanager --licenses
 
   # touch repositories config to avoid getting error about /root/.android/repositories.cfg missing
   notifyUserOfNextStep "Touching /root/.android/repositories.cfg file to avoid missing file error"
