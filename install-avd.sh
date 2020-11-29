@@ -100,6 +100,9 @@ installAvd() {
   notifyUserOfNextStep "Downloading (if needed), and unpacking Android SDK Tools"
   sudo apt install wget unzip
   if [ ! -f "${SDK_ZIP_PATH}" ]; then
+    ##
+    # If wget fails find lates here: https://developer.android.com/studio#downloads
+    ##
     wget https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip -O "${SDK_ZIP_PATH}"
   fi
   unzip "${SDK_ZIP_PATH}" -d "${HOME}/Downloads"
