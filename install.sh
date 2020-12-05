@@ -441,7 +441,6 @@ y | Y)
   checkIfPackageIsInstalledAndInstall snapd
   checkIfSNAPPackageIsInstalledAndInstall "flutter"
   installAvd
-  flutter doctor -v
   ;;
 n | N)
   ## explicitly cancelled by user

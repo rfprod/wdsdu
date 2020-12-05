@@ -169,6 +169,8 @@ installAvd() {
   android list avd
 
   notifyUserOfSuccess "AVD was successfully installed"
+
+  flutter doctor -v
 }
 
 if [ "$1" = "?" ]; then
