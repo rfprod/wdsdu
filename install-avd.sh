@@ -3,10 +3,12 @@
 ##
 # Colors.
 ##
+# shellcheck source=utils/colors.sh
 source utils/colors.sh ''
 ##
 # Print utils.
 ##
+# shellcheck source=utils/print.sh
 source utils/print.sh ''
 
 ##
