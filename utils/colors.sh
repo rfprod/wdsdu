@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ##
-# Color definitions.
+# Colors definitions.
 #
 # Black        0;30     Dark Gray     1;30
 # Red          0;31     Light Red     1;31
@@ -53,7 +53,6 @@ REGISTERED_COLOR_NAMES=(
   WHITE
 )
 
-# shellcheck disable=SC2034
 REGISTERED_COLOR_VARS=(
   "$DEFAULT"
   "$BLACK"

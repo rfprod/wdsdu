@@ -3,7 +3,11 @@
 ##
 # Colors.
 ##
-source colors.sh ''
+source utils/colors.sh ''
+##
+# Print utils.
+##
+source utils/print.sh ''
 
 ##
 # Colors.
@@ -34,59 +38,6 @@ optionalUserChoice() {
 }
 
 ##
-# Notifies user of next step.
-##
-notifyUserOfNextStep() {
-  printf "\n
-    ${LIGHT_BLUE}%s...
-    ${DEFAULT}\n\n" "${1}"
-}
-
-##
-# Notifies user of prerequisite installation.
-##
-notifyUserOfPrerequisiteInstallation() {
-  printf "\n
-    ${YELLOW} - ${CYAN}%s...
-    ${DEFAULT}\n\n" "${1}"
-}
-
-##
-# Notifies user of installation.
-##
-notifyUserOfInstallation() {
-  printf "\n
-    ${LIGHT_CYAN} >> %s
-    ${DEFAULT}\n\n" "${1}"
-}
-
-##
-# Notifies user of error.
-##
-notifyUserOfError() {
-  printf "\n
-    ${RED}%s
-    ${DEFAULT}" "${1}"
-}
-
-##
-# Notifies user of success.
-##
-notifyUserOfSuccess() {
-  printf "\n
-    ${GREEN}%s
-    ${DEFAULT}" "${1}"
-}
-
-##
-# Notifies user of action.
-##
-notifyUserOfAction() {
-  printf "
-    ${DEFAULT}> ${LIGHT_CYAN} %s${DEFAULT}" "${1}"
-}
-
-##
 # Notifies user of cancelled installation.
 ##
 notifyUserOfCancelledInstallation() {
@@ -99,18 +50,19 @@ notifyUserOfCancelledInstallation() {
 # Checks if package is installed and takes respective action.
 ##
 checkIfPackageIsInstalledAndInstall() {
-  printf "\n
-    ${YELLOW} >> checking if package is installed: ${CYAN}%s
-    ${DEFAULT}\n\n" "${1}"
+  printInfoMessage "Checking if package is installed ${1}"
+  printGap
+
   PACKAGE_EXISTS=$(dpkg -s "$1")
   if [ -z "${PACKAGE_EXISTS}" ]; then
-    notifyUserOfError "PACKAGE DOES NOT EXIST"
-    notifyUserOfAction "installing package..."
-    printf "\n\n"
+    printErrorTitle "PACKAGE DOES NOT EXIST"
+    printInfoMessage "Installing package..."
+    printGap
+
     sudo apt install -y "$1"
   else
-    notifyUserOfSuccess "PACKAGE EXISTS"
-    printf "\n\n"
+    printSuccessTitle "PACKAGE EXISTS"
+    printGap
   fi
 }
 
@@ -127,9 +79,9 @@ resolveIfPackageIsInstalled() {
 ##
 notifyOfInstalledGlobalNpmDependencies() {
   DEPS=$(sudo npm list -g --depth=0)
-  notifyUserOfSuccess "Installed dependencies:"
+  printSuccessTitle "Installed dependencies:"
   # shellcheck disable=SC2059
-  printf "${DEPS}\n"
+  printf "\n${DEPS}\n"
 }
 
 ##
@@ -138,13 +90,16 @@ notifyOfInstalledGlobalNpmDependencies() {
 checkIfGlobalNpmDependencyIsInstalledAndInstall() {
   DEPENDENCY_NAME=$1
   DEPS=$(sudo npm list -g --depth=0)
-  notifyUserOfAction "dependency check"
+
+  printInfoMessage "Dependency check"
+  printGap
+
   if grep -q "${DEPENDENCY_NAME}"@ <<<"$DEPS"; then
-    printf "
-      ${GREEN}+ %s installed ${DEFAULT}\n" "$DEPENDENCY_NAME"
+    printSuccessMessage "$DEPENDENCY_NAME is installed"
+    printGap
   else
-    printf "
-      ${LIGHT_RED}- %s is not installed ${DEFAULT}\n" "$DEPENDENCY_NAME"
+    printWarningMessage "$DEPENDENCY_NAME is not installed"
+    printGap
 
     sudo npm install -g "${DEPENDENCY_NAME}@latest"
   fi
@@ -156,8 +111,8 @@ checkIfGlobalNpmDependencyIsInstalledAndInstall() {
 resolveIfSNAPPackageIsInstalled() {
   SNAP_EXISTS=$(snap find "$1")
   if [ "${SNAP_EXISTS}" == "No matching snaps for ""${1}""" ]; then
-    notifyUserOfError "PACKAGE DOES NOT EXIST"
-    printf "\n\n"
+    printErrorTitle "PACKAGE DOES NOT EXIST"
+    printGap
   else
     echo "${SNAP_EXISTS}"
   fi
@@ -170,9 +125,9 @@ checkIfSNAPPackageIsInstalledAndInstall() {
   DEPENDENCY_NAME=$1
   SNAP_EXISTS=$(snap find "$DEPENDENCY_NAME")
   if [ "${SNAP_EXISTS}" == "No matching snaps for ""${DEPENDENCY_NAME}""" ]; then
-    notifyUserOfError "PACKAGE DOES NOT EXIST"
-    notifyUserOfAction "installing package..."
-    printf "\n\n"
+    printErrorTitle "PACKAGE DOES NOT EXIST"
+    printInfoMessage "Installing package..."
+    printGap
 
     sudo snap install "$DEPENDENCY_NAME" --classic
   else
@@ -181,27 +136,34 @@ checkIfSNAPPackageIsInstalledAndInstall() {
 }
 
 ## start
-notifyUserOfNextStep "This script will install dependencies required for development"
+printInfoTitle "This script will install dependencies required for development"
+printGap
 
 ## update apt
-notifyUserOfPrerequisiteInstallation "Updating apt"
+printInfoMessage "Updating apt"
+printGap
 sudo apt update
 
 ## install dependencies required for subsequent installations
-notifyUserOfPrerequisiteInstallation "Installing dependencies required for subsequent installations"
+printInfoMessage "Installing dependencies required for subsequent installations"
+printGap
+
 checkIfPackageIsInstalledAndInstall apt-transport-https
 checkIfPackageIsInstalledAndInstall ca-certificates
 checkIfPackageIsInstalledAndInstall curl
 checkIfPackageIsInstalledAndInstall software-properties-common
 
 ## install guake, and tmux
-notifyUserOfNextStep "Install guake, and tmux"
+printInfoTitle "Install guake, and tmux"
+printGap
 read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
   ## notify user, and install
-  notifyUserOfInstallation "installing guake, and tmux"
+  printInfoMessage "Installing guake, and tmux"
+  printGap
+
   checkIfPackageIsInstalledAndInstall guake
   checkIfPackageIsInstalledAndInstall tmux
   ;;
@@ -216,13 +178,16 @@ n | N)
 esac
 
 ## install freerdp2-x11
-notifyUserOfNextStep "Install freerdp2-x11"
+printInfoTitle "Install freerdp2-x11"
+printGap
 read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
   ## notify user, and install
-  notifyUserOfInstallation "installing freerdp2-x11"
+  printInfoMessage "Installing freerdp2-x11"
+  printGap
+
   checkIfPackageIsInstalledAndInstall freerdp2-x11
   ;;
 n | N)
@@ -236,13 +201,16 @@ n | N)
 esac
 
 ## install chromium-browser
-notifyUserOfNextStep "Install chromium"
+printInfoTitle "Install chromium"
+printGap
 read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
   ## notify user, and install
-  notifyUserOfInstallation "installing chromium-browser"
+  printInfoMessage "Installing chromium-browser"
+  printGap
+
   checkIfSNAPPackageIsInstalledAndInstall "chromium"
   ;;
 n | N)
@@ -256,31 +224,30 @@ n | N)
 esac
 
 ## install google-chrome-stable
-notifyUserOfNextStep "Install google-chrome-stable"
+printInfoTitle "Install google-chrome-stable"
+printGap
 read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
   ### notify user, and install
-  notifyUserOfInstallation "installing google-chrome-stable"
+  printInfoMessage "Installing google-chrome-stable"
+  printGap
+
   CHROME_EXISTS=$(resolveIfPackageIsInstalled google-chrome-stable)
   if [ -z "${CHROME_EXISTS}" ]; then
-    TITLE="PACKAGE DOES NOT EXIST"
-    printf "\n
-        ${RED}%s\n
-        ${LIGHT_GREEN}installing package...\n
-        ${DEFAULT}\n\n" "$TITLE"
+    printWarningMessage "PACKAGE DOES NOT EXIST"
+    printInfoMessage "installing package"
+    printGap
 
     wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
     echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list
     sudo apt update
     sudo apt install -y google-chrome-stable
   else
-    TITLE="PACKAGE EXISTS"
-    printf "\n
-        ${GREEN}%s\n
-        ${CHROME_EXISTS}\n
-        ${DEFAULT}\n\n" "$TITLE"
+    printSuccessMessage "PACKAGE EXISTS"
+    printNameAndValue "CHROME_EXISTS" "$CHROME_EXISTS"
+    printGap
   fi
   ;;
 n | N)
@@ -294,13 +261,16 @@ n | N)
 esac
 
 ## install git
-notifyUserOfNextStep "Install git"
+printInfoTitle "Install git"
+printGap
 read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
   ## notify user, and install
-  notifyUserOfInstallation "installing git"
+  printInfoMessage "Installing git"
+  printGap
+
   checkIfPackageIsInstalledAndInstall git
   ;;
 n | N)
@@ -314,20 +284,20 @@ n | N)
 esac
 
 ## install docker stable, remove old first
-notifyUserOfNextStep "Install docker"
+printInfoTitle "Install docker"
+printGap
 read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
   ## notify user, and install
-  notifyUserOfInstallation "installing docker"
+  printInfoMessage "Installing docker"
+  printGap
   DOCKER_EXISTS=$(resolveIfPackageIsInstalled docker-ce)
   if [ -z "${DOCKER_EXISTS}" ]; then
-    TITLE="PACKAGE DOES NOT EXIST"
-    printf "\n
-        ${RED}%s\n
-        ${LIGHT_GREEN}installing package...\n
-        ${DEFAULT}\n\n" "$TITLE"
+    printWarningMessage "PACKAGE DOES NOT EXIST"
+    printInfoMessage "installing package..."
+    printGap
 
     sudo apt remove -y docker docker-engine docker.io
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -340,11 +310,9 @@ y | Y)
     sudo apt update
     sudo apt install -y docker-ce
   else
-    TITLE="PACKAGE EXISTS"
-    printf "\n
-        ${GREEN}%s\n
-        ${DOCKER_EXISTS}\n
-        ${DEFAULT}\n\n" "$TITLE"
+    printSuccessMessage "PACKAGE EXISTS"
+    printNameAndValue "DOCKER_EXISTS" "${DOCKER_EXISTS}"
+    printGap
   fi
   ;;
 n | N)
@@ -358,31 +326,30 @@ n | N)
 esac
 
 ## install nodejs v14, and build essential for compiling and installing native addons
-notifyUserOfNextStep "Install nodejs v14, and build-essential, and update npm to latest version"
+printInfoTitle "Install nodejs v14, and build-essential, and update npm to latest version"
+printGap
 read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
   ## notify user, and install
-  notifyUserOfInstallation "installing nodejs v14, build-essential, and updating npm"
+  printInfoMessage "Installing nodejs v14, build-essential, and updating npm"
+  printGap
+
   NODE_EXISTS=$(resolveIfPackageIsInstalled nodejs)
   if [ -z "${NODE_EXISTS}" ]; then
-    TITLE="PACKAGE DOES NOT EXIST"
-    printf "\n
-        ${RED}%s\n
-        ${LIGHT_GREEN}installing package...\n
-        ${DEFAULT}\n\n" "$TITLE"
+    printWarningMessage "PACKAGE DOES NOT EXIST"
+    printInfoMessage "installing package..."
+    printGap
 
     curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
     sudo apt install -y nodejs
     checkIfPackageIsInstalledAndInstall build-essential
     sudo npm install -g npm
   else
-    TITLE="PACKAGE EXISTS"
-    printf "\n
-        ${GREEN}%s\n
-        ${NODE_EXISTS}\n
-        ${DEFAULT}\n\n" "$TITLE"
+    printSuccessMessage "PACKAGE EXISTS"
+    printNameAndValue "NODE_EXISTS" "${NODE_EXISTS}"
+    printGap
   fi
   ;;
 n | N)
@@ -396,12 +363,14 @@ n | N)
 esac
 
 ## install global npm dependencies
-notifyUserOfNextStep "Install global npm dependencies"
+printInfoTitle "Install global npm dependencies"
+printGap
 read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
-  notifyUserOfInstallation "installing global npm dependencies"
+  printInfoMessage "Installing global npm dependencies"
+  printGap
 
   notifyOfInstalledGlobalNpmDependencies
 
@@ -431,13 +400,16 @@ n | N)
 esac
 
 ## install flutter + avd
-notifyUserOfNextStep "Install flutter + avd"
+printInfoTitle "Install flutter + avd"
+printGap
 read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
   ## notify user, and install
-  notifyUserOfInstallation "installing flutter"
+  printInfoMessage "Installing flutter"
+  printGap
+
   checkIfPackageIsInstalledAndInstall snapd
   checkIfSNAPPackageIsInstalledAndInstall "flutter"
   installAvd
@@ -453,20 +425,21 @@ n | N)
 esac
 
 ## install vscode
-notifyUserOfNextStep "Install vscode"
+printInfoTitle "Install vscode"
+printGap
 read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless confirmed (y/n)?" -t $WAIT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
   ## notify user, and install
-  notifyUserOfInstallation "installing vscode"
-  NODE_EXISTS=$(resolveIfPackageIsInstalled code)
-  if [ -z "${NODE_EXISTS}" ]; then
-    TITLE="PACKAGE DOES NOT EXIST"
-    printf "\n
-        ${RED}%s\n
-        ${LIGHT_GREEN}installing package...\n
-        ${DEFAULT}\n\n" "$TITLE"
+  printInfoMessage "Installing vscode"
+  printGap
+
+  VSCODE_EXTENSION_EXISTS=$(resolveIfPackageIsInstalled code)
+  if [ -z "${VSCODE_EXTENSION_EXISTS}" ]; then
+    printWarningMessage "PACKAGE DOES NOT EXIST"
+    printInfoMessage "installing package..."
+    printGap
 
     wget -qO - https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >microsoft.gpg
     sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
@@ -487,11 +460,11 @@ y | Y)
     code --install-extension editorconfig.editorconfig
     code --install-extension mikestead.dotenv
     code --install-extension shd101wyy.markdown-preview-enhanced
+    code --install-extension tomoyukim.vscode-mermaid-editor
     code --install-extension eg2.vscode-npm-script
     code --install-extension ms-azuretools.vscode-docker
     code --install-extension dbaeumer.vscode-eslint
     code --install-extension esbenp.prettier-vscode
-    code --install-extension ms-vscode.vscode-typescript-tslint-plugin
     code --install-extension ghaschel.vscode-angular-html
     code --install-extension natewallace.angular2-inline
     code --install-extension johnpapa.angular2
@@ -503,12 +476,12 @@ y | Y)
     code --install-extension timonwong.shellcheck
     code --install-extension stepsize.tech-debt-tracker
     code --install-extension stylelint.vscode-stylelint
+    code --install-extension dart-code.dart-code
+    code --install-extension dart-code.flutter
   else
-    TITLE="PACKAGE EXISTS"
-    printf "\n
-        ${GREEN}%s\n
-        ${NODE_EXISTS}\n
-        ${DEFAULT}\n\n" "$TITLE"
+    printSuccessMessage "PACKAGE EXISTS"
+    printNameAndValue "VSCODE_EXTENSION_EXISTS" "${VSCODE_EXTENSION_EXISTS}"
+    printGap
   fi
   ;;
 n | N)
