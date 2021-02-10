@@ -25,7 +25,6 @@ reportUsage() {
 # Install AVD.
 ##
 installAvd() {
-
   # check architecture
   printInfoTitle "Checking architecture"
   printGap
@@ -45,13 +44,10 @@ installAvd() {
   printGap
   sudo apt-get install g++
 
-  # install JDK 8+
-  printInfoTitle "Installing JDK 8"
+  # install Open JDK 11
+  printInfoTitle "Installing Open JDK 11"
   printGap
-  sudo apt-get install python-software-properties
-  sudo add-apt-repository ppa:webupd8team/java
-  sudo apt-get update
-  sudo apt-get install oracle-java8-installer
+  sudo apt-get install default-jdk openjdk-11-jdk
 
   # configure JDK
   printInfoTitle "Configuring JDK"
@@ -68,12 +64,8 @@ installAvd() {
   printGap
   if grep -q "JAVA_HOME" "${BASHRC_PATH}"; then
     JAVA_HOME_CURRENT_VALUE=$(grep "^.*JAVA_HOME.*$" "${BASHRC_PATH}")
-    printInfoMessage "JAVA_HOME exists, current value: ${JAVA_HOME_CURRENT_VALUE}"
+    printWarningMessage "JAVA_HOME exists, current value: ${JAVA_HOME_CURRENT_VALUE}"
     printGap
-    printInfoMessage "Backing up ${BASHRC_PATH}"
-    printGap
-    cp "${BASHRC_PATH}" "${HOME}/.bashrc-custom-tns-installer-backup-0"
-    find "${BASHRC_PATH}" -exec sed -i "s/^.*JAVA_HOME.*$/$JAVA_HOME_NEW_VALUE/g" {} \;
   else
     printInfoMessage "JAVA_HOME does not exist, setting value"
     printGap
@@ -83,7 +75,7 @@ installAvd() {
     } >>"$BASHRC_PATH"
   fi
 
-  SDK_ZIP_PATH="${HOME}/Downloads/sdk-tools-linux-3859397.zip"
+  SDK_ZIP_PATH="${HOME}/Downloads/commandlinetools-linux-6858069_latest.zip"
 
   # download android sdk tools
   printInfoTitle "Downloading (if needed), and unpacking Android SDK Tools"
@@ -100,31 +92,34 @@ installAvd() {
   # create android sdk tools
   printInfoTitle "Creating Android SDK Tools directory"
   printGap
-  sudo mkdir /usr/share/android
-  sudo mkdir /usr/share/android/sdk
+  mkdir "${HOME}/android"
+  mkdir "${HOME}/android/sdk"
+  mkdir "${HOME}/android/sdk/cmdline-tools"
+  mkdir "${HOME}/android/sdk/cmdline-tools/latest"
 
   # set ANDROID_HOME
   printInfoTitle "Setting ANDROID_HOME system environment variable"
   printGap
   if grep -q "ANDROID_HOME" "${BASHRC_PATH}"; then
     ANDROID_HOME_CURRENT_VALUE=$(grep "^.*ANDROID_HOME.*$" "${BASHRC_PATH}")
-    printInfoMessage "ANDROID_HOME exists, current value: ${ANDROID_HOME_CURRENT_VALUE}"
+    printWarningMessage "ANDROID_HOME exists, current value: ${ANDROID_HOME_CURRENT_VALUE}"
     printGap
-    printInfoMessage "Backing up ${BASHRC_PATH}"
-    printGap
-    cp "${BASHRC_PATH}" "${HOME}/.bashrc-custom-tns-installer-backup-1"
-    ANDROID_HOME_NEW_VALUE="export ANDROID_HOME=$(update-alternatives --query javac | sed -n -e 's/Best: *\(.*\)\/bin\/javac/\1/p')"
-    printInfoMessage "ANDROID_HOME, new value: ${ANDROID_HOME_NEW_VALUE}"
-    printGap
-    find "${BASHRC_PATH}" -exec sed -i "s/^.*ANDROID_HOME.*$/$ANDROID_HOME_NEW_VALUE/g" {} \;
   else
     printInfoTitle "ANDROID_HOME does not exist, setting value"
     printGap
     {
       echo "# android sdk variables"
-      echo "export ANDROID_HOME=/usr/share/android/sdk"
+      echo "export ANDROID_HOME=/home/suser/android/sdk"
     } >>"$BASHRC_PATH"
   fi
+
+  # copy sdk tools
+  printInfoTitle "Copying ${HOME}/Downloads/cmdline-tools to ${ANDROID_HOME}"
+  printGap
+  cp -r "${HOME}/Downloads/cmdline-tools/bin" "${HOME}/android/sdk/cmdline-tools/latest"
+  cp -r "${HOME}/Downloads/cmdline-tools/lib" "${HOME}/android/sdk/cmdline-tools/latest"
+  cp "${HOME}/Downloads/cmdline-tools/source.properties" "${HOME}/android/sdk/cmdline-tools/latest"
+  cp "${HOME}/Downloads/cmdline-tools/NOTICE.txt" "${HOME}/android/sdk/cmdline-tools/latest"
 
   # apply .bashrc changes
   printInfoTitle "Applying ${BASHRC_PATH} changes"
@@ -133,45 +128,41 @@ installAvd() {
   # shellcheck disable=SC1091
   source "$BASHRC_PATH"
 
-  # copy sdk tools
-  printInfoTitle "Copying ${HOME}/Downloads/tools to ${ANDROID_HOME}"
-  printGap
-  sudo cp -r "${HOME}/Downloads/tools" "$ANDROID_HOME"/
-
   # install sdk tools
-  printInfoTitle "Installing Android SDK Platform 25, Android SDK Build-Tools 25.0.2 or later, Android Support Repository, Google Repository"
+  printInfoTitle "Installing Android SDK Platform 29 or later, Android SDK Build-Tools 28.0.2 or later, Android Support Repository, Google Repository"
   printGap
-  sudo "$ANDROID_HOME"/tools/bin/sdkmanager --install "tools" "platform-tools" "platforms;android-29" "build-tools;28.0.2" "extras;android;m2repository" "extras;google;m2repository"
+  "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --install "tools" "platform-tools" "platforms;android-29" "build-tools;28.0.2" "extras;android;m2repository" "extras;google;m2repository"
 
   # batch accept licenses
   printInfoTitle "Sdk manager: batch accept licenses"
   printGap
-  yes | sudo "$ANDROID_HOME"/tools/bin/sdkmanager --licenses
+  yes | "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --licenses
 
   # touch repositories config to avoid getting error about /root/.android/repositories.cfg missing
   printInfoTitle "Touching /root/.android/repositories.cfg file to avoid missing file error"
   printGap
+  sudo mkdir /root/.android || true
   sudo touch /root/.android/repositories.cfg
 
   # install images
   printInfoTitle "Installing Android images"
   printGap
-  sudo "$ANDROID_HOME"/tools/bin/sdkmanager "system-images;android-25;google_apis;x86"
+  "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager "system-images;android-25;google_apis;x86"
 
   # list available targets
   printInfoTitle "Listing available targets"
   printGap
-  android list target
+  "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" list target
 
   # create avd
   printInfoTitle "Creating avd"
   printGap
-  android create avd -n api25device -k "system-images;android-25;google_apis;x86"
+  "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" create avd -n api25device -k "system-images;android-25;google_apis;x86"
 
   # list created avds
   printInfoTitle "Listing available avds"
   printGap
-  android list avd
+  "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" list avd
 
   printSuccessTitle "AVD was successfully installed"
 
