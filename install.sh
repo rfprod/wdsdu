@@ -62,6 +62,11 @@ checkIfPackageIsInstalledAndInstall() {
     printGap
 
     sudo apt install -y "$1"
+
+    # this step is required if bash-completion was not installed prior to this script execution
+    if [ "$1" = 'bash-completion' ]; then
+      source /etc/bash_completion
+    fi
   else
     printSuccessTitle "PACKAGE EXISTS"
     printGap
@@ -154,6 +159,7 @@ checkIfPackageIsInstalledAndInstall apt-transport-https
 checkIfPackageIsInstalledAndInstall ca-certificates
 checkIfPackageIsInstalledAndInstall curl
 checkIfPackageIsInstalledAndInstall software-properties-common
+checkIfPackageIsInstalledAndInstall bash-completion
 
 ## install guake, and tmux
 printInfoTitle "Install guake, and tmux"
@@ -346,6 +352,8 @@ y | Y)
     # use a subshell to download curl to the ~/Downloads directory
     (cd ~/Downloads && curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb)
     sudo dpkg -i ~/Downloads/minikube_latest_amd64.deb
+    # set autocompletion for bash users
+    source <(minikube completion bash)
   else
     printSuccessMessage "PACKAGE EXISTS"
     printNameAndValue "DOCKER_EXISTS" "${DOCKER_EXISTS}"
