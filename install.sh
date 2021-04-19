@@ -327,6 +327,41 @@ n | N)
   ;;
 esac
 
+## install minikube
+printInfoTitle "Install minikube"
+printGap
+read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
+defaultUserChoice
+case $userChoice in
+y | Y)
+  ## notify user, and install
+  printInfoMessage "Installing minikube"
+  printGap
+  MINIKUBE_EXISTS=$(resolveIfPackageIsInstalled minikube)
+  if [ -z "${MINIKUBE_EXISTS}" ]; then
+    printWarningMessage "PACKAGE DOES NOT EXIST"
+    printInfoMessage "installing package..."
+    printGap
+
+    # use a subshell to download curl to the ~/Downloads directory
+    (cd ~/Downloads && curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb)
+    sudo dpkg -i ~/Downloads/minikube_latest_amd64.deb
+  else
+    printSuccessMessage "PACKAGE EXISTS"
+    printNameAndValue "DOCKER_EXISTS" "${DOCKER_EXISTS}"
+    printGap
+  fi
+  ;;
+n | N)
+  ## explicitly cancelled by user
+  notifyUserOfCancelledInstallation "${userChoice}"
+  ;;
+*)
+  ## implicitly cancelled by user
+  notifyUserOfCancelledInstallation "${userChoice}"
+  ;;
+esac
+
 ## install nodejs v14, and build essential for compiling and installing native addons
 printInfoTitle "Install nodejs v14, and build-essential, and update npm to latest version"
 printGap

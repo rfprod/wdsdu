@@ -4,7 +4,7 @@
 
 An installation script and instructions for Debian/Ubuntu web-development environment deployment.
 
-### Application
+### The Script
 
 Can be used to deploy Debian/Ubuntu web-development environment, which includes the following:
 
@@ -33,23 +33,29 @@ Can be used to deploy Debian/Ubuntu web-development environment, which includes 
   - [`@compodoc/compodoc`](https://compodoc.app/)
 - [`Flutter`](https://flutter.dev/)
 - [`VsCode`](https://code.visualstudio.com/)
+- [`Kubernetes: minikube`](https://minikube.sigs.k8s.io/docs/)
 
 ### Docker documentation
 
-* [`Docker: documentation`](https://docs.docker.com)
-* [`Docker: Engine command-line reference`](https://docs.docker.com/engine/reference/commandline/docker/)
-* [`Docker: Configure and use Docker`](https://docs.docker.com/engine/reference/commandline/docker/)
+- [`Docker: documentation`](https://docs.docker.com)
+- [`Docker: Engine command-line reference`](https://docs.docker.com/engine/reference/commandline/docker/)
+- [`Docker: Configure and use Docker`](https://docs.docker.com/engine/reference/commandline/docker/)
 
 ### Flutter documentation
 
-* [`Flutter: documentation`](https://flutter.dev/docs)
+- [`Flutter: documentation`](https://flutter.dev/docs)
 
 ### Firebase documentation
 
-* [`Firebase Web: Getting started`](https://firebase.google.com/docs/web/setup)
-* [`Firebase Web: API Reference`](https://firebase.google.com/docs/reference/js/)
-* [`Firebase Web: Codelabs`](https://codelabs.developers.google.com/codelabs/firebase-web/#0)
+- [`Firebase Web: Getting started`](https://firebase.google.com/docs/web/setup)
+- [`Firebase Web: API Reference`](https://firebase.google.com/docs/reference/js/)
+- [`Firebase Web: Codelabs`](https://codelabs.developers.google.com/codelabs/firebase-web/#0)
+
+### Kubernetes documentation
+
+- [`Kubernetes`](https://kubernetes.io/docs/home/)
+- [`Kubernetes: minikube`](https://minikube.sigs.k8s.io/docs/)
 
 ## Licenses
 
-* [`WDSDU`](LICENSE)
+- [`WDSDU`](LICENSE)
