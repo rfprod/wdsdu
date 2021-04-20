@@ -55,6 +55,7 @@ Can be used to deploy Debian/Ubuntu web-development environment, which includes 
 
 - [`Kubernetes`](https://kubernetes.io/docs/home/)
 - [`Kubernetes: minikube`](https://minikube.sigs.k8s.io/docs/)
+- [`Kubernetes: kubectl`](https://kubernetes.io/docs/tasks/tools/#kubectl)
 
 ## Licenses
 

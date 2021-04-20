@@ -370,6 +370,43 @@ n | N)
   ;;
 esac
 
+## install kubectl
+printInfoTitle "Install kubectl"
+printGap
+read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
+defaultUserChoice
+case $userChoice in
+y | Y)
+  ## notify user, and install
+  printInfoMessage "Installing kubectl"
+  printGap
+  MINIKUBE_EXISTS=$(resolveIfPackageIsInstalled kubectl)
+  if [ -z "${MINIKUBE_EXISTS}" ]; then
+    printWarningMessage "PACKAGE DOES NOT EXIST"
+    printInfoMessage "installing package..."
+    printGap
+
+    sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+    sudo apt update
+    sudo apt install -y kubectl
+  else
+    printSuccessMessage "PACKAGE EXISTS"
+    printNameAndValue "DOCKER_EXISTS" "${DOCKER_EXISTS}"
+    printGap
+  fi
+  ;;
+n | N)
+  ## explicitly cancelled by user
+  notifyUserOfCancelledInstallation "${userChoice}"
+  ;;
+*)
+  ## implicitly cancelled by user
+  notifyUserOfCancelledInstallation "${userChoice}"
+  ;;
+esac
+
 ## install nodejs v14, and build essential for compiling and installing native addons
 printInfoTitle "Install nodejs v14, and build-essential, and update npm to latest version"
 printGap
