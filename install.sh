@@ -317,7 +317,15 @@ y | Y)
         stable"
     sudo apt update
     sudo apt install -y docker-ce
+
+    # add ability to ru docker commands without sudo
+    sudo groupadd docker
+    sudo usermod -aG docker "$USER"
+    newgrp docker
+    sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
+    sudo chmod g+rwx "$HOME/.docker" -R
   else
+
     printSuccessMessage "PACKAGE EXISTS"
     printNameAndValue "DOCKER_EXISTS" "${DOCKER_EXISTS}"
     printGap
