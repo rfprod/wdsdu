@@ -361,7 +361,7 @@ y | Y)
     (cd ~/Downloads && curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb)
     sudo dpkg -i ~/Downloads/minikube_latest_amd64.deb
     # set bash autocompletion
-    source <(minikube completion bash)
+    echo "source <(minikube completion bash)" >>~/.bashrc # add autocomplete permanently to your bash shell.
   else
     printSuccessMessage "PACKAGE EXISTS"
     printNameAndValue "DOCKER_EXISTS" "${DOCKER_EXISTS}"
@@ -400,7 +400,7 @@ y | Y)
     sudo apt update
     sudo apt install -y kubectl
     # set bash autocompletion
-    source <(kubectl completion bash)
+    echo "source <(kubectl completion bash)" >>~/.bashrc # add autocomplete permanently to your bash shell.
   else
     printSuccessMessage "PACKAGE EXISTS"
     printNameAndValue "DOCKER_EXISTS" "${DOCKER_EXISTS}"
