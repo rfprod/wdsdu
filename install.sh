@@ -364,7 +364,7 @@ y | Y)
     echo "source <(minikube completion bash)" >>~/.bashrc # add autocomplete permanently to your bash shell.
   else
     printSuccessMessage "PACKAGE EXISTS"
-    printNameAndValue "DOCKER_EXISTS" "${DOCKER_EXISTS}"
+    printNameAndValue "MINIKUBE_EXISTS" "${MINIKUBE_EXISTS}"
     printGap
   fi
   ;;
@@ -388,8 +388,8 @@ y | Y)
   ## notify user, and install
   printInfoMessage "Installing kubectl"
   printGap
-  MINIKUBE_EXISTS=$(resolveIfPackageIsInstalled kubectl)
-  if [ -z "${MINIKUBE_EXISTS}" ]; then
+  KUBECTL_EXISTS=$(resolveIfPackageIsInstalled kubectl)
+  if [ -z "${KUBECTL_EXISTS}" ]; then
     printWarningMessage "PACKAGE DOES NOT EXIST"
     printInfoMessage "installing package..."
     printGap
@@ -403,7 +403,42 @@ y | Y)
     echo "source <(kubectl completion bash)" >>~/.bashrc # add autocomplete permanently to your bash shell.
   else
     printSuccessMessage "PACKAGE EXISTS"
-    printNameAndValue "DOCKER_EXISTS" "${DOCKER_EXISTS}"
+    printNameAndValue "KUBECTL_EXISTS" "${KUBECTL_EXISTS}"
+    printGap
+  fi
+  ;;
+n | N)
+  ## explicitly cancelled by user
+  notifyUserOfCancelledInstallation "${userChoice}"
+  ;;
+*)
+  ## implicitly cancelled by user
+  notifyUserOfCancelledInstallation "${userChoice}"
+  ;;
+esac
+
+## install helm
+printInfoTitle "Install helm"
+printGap
+read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
+defaultUserChoice
+case $userChoice in
+y | Y)
+  ## notify user, and install
+  printInfoMessage "Installing helm"
+  printGap
+  HELM_EXISTS=$(checkIfSNAPPackageIsInstalledAndInstall helm)
+  if [ -z "${HELM_EXISTS}" ]; then
+    printWarningMessage "PACKAGE DOES NOT EXIST"
+    printInfoMessage "installing package..."
+    printGap
+
+    sudo snap install helm --classic
+    # set bash autocompletion
+    echo "source <(helm completion bash)" >>~/.bashrc # add autocomplete permanently to your bash shell.
+  else
+    printSuccessMessage "PACKAGE EXISTS"
+    printNameAndValue "HELM_EXISTS" "${HELM_EXISTS}"
     printGap
   fi
   ;;
