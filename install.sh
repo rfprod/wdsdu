@@ -605,6 +605,8 @@ y | Y)
     code --install-extension stylelint.vscode-stylelint
     code --install-extension dart-code.dart-code
     code --install-extension dart-code.flutter
+    code --install-extension rbbit.typescript-hero
+    code --install-extension redhat.vscode-yaml
   else
     printSuccessMessage "PACKAGE EXISTS"
     printNameAndValue "VSCODE_EXTENSION_EXISTS" "${VSCODE_EXTENSION_EXISTS}"
