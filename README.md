@@ -1,4 +1,4 @@
-# Web Development Setup Debian/Ununtu (WDSDU)
+# Web Development Setup Debian/Ubuntu (WDSDU)
 
 ## Overview
 
