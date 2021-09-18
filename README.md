@@ -1,8 +1,16 @@
-# WebDevSetupDebianUnuntu (WDSDU)
+# Web Development Setup Debian/Ununtu (WDSDU)
 
 ## Overview
 
 An installation script and instructions for Debian/Ubuntu web-development environment deployment.
+
+## Requirements
+
+In order to run own copy of the project one must fulfill the following requirements.
+
+### Supported operating systems
+
+- [Debian based Linux](https://en.wikipedia.org/wiki/List_of_Linux_distributions#Debian-based)
 
 ### The Script
 
