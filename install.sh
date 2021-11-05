@@ -57,7 +57,7 @@ installAptPackage() {
 
   PACKAGE_EXISTS=$(dpkg -s "$1")
   if [ -z "${PACKAGE_EXISTS}" ]; then
-    printErrorTitle "PACKAGE DOES NOT EXIST"
+    printErrorTitle "Package does not exist"
     printInfoMessage "Installing package..."
     printGap
 
@@ -68,7 +68,7 @@ installAptPackage() {
       source /etc/bash_completion
     fi
   else
-    printSuccessTitle "PACKAGE EXISTS"
+    printSuccessTitle "Package exists"
     printGap
   fi
 }
@@ -118,7 +118,7 @@ checkIfGlobalNpmDependencyIsInstalledAndInstall() {
 resolveIfSNAPPackageIsInstalled() {
   SNAP_EXISTS=$(snap find "$1")
   if [ "${SNAP_EXISTS}" == "No matching snaps for ""${1}""" ]; then
-    printErrorTitle "PACKAGE DOES NOT EXIST"
+    printErrorTitle "Package does not exist"
     printGap
   else
     echo "${SNAP_EXISTS}"
@@ -132,7 +132,7 @@ installSnapPackage() {
   DEPENDENCY_NAME=$1
   SNAP_EXISTS=$(snap find "$DEPENDENCY_NAME")
   if [ "${SNAP_EXISTS}" == "No matching snaps for ""${DEPENDENCY_NAME}""" ]; then
-    printErrorTitle "PACKAGE DOES NOT EXIST"
+    printErrorTitle "Package does not exist"
     printInfoMessage "Installing package..."
     printGap
 
@@ -233,7 +233,7 @@ y | Y)
 
   CHROME_EXISTS=$(resolveIfPackageIsInstalled google-chrome-stable)
   if [ -z "${CHROME_EXISTS}" ]; then
-    printWarningMessage "PACKAGE DOES NOT EXIST"
+    printWarningMessage "Package does not exist"
     printInfoMessage "installing package"
     printGap
 
@@ -242,7 +242,7 @@ y | Y)
     sudo apt update
     sudo apt install -y google-chrome-stable
   else
-    printSuccessMessage "PACKAGE EXISTS"
+    printSuccessMessage "Package exists"
     printNameAndValue "CHROME_EXISTS" "$CHROME_EXISTS"
     printGap
   fi
@@ -286,7 +286,7 @@ y | Y)
   printGap
   DOCKER_EXISTS=$(resolveIfPackageIsInstalled docker-ce)
   if [ -z "${DOCKER_EXISTS}" ]; then
-    printWarningMessage "PACKAGE DOES NOT EXIST"
+    printWarningMessage "Package does not exist"
     printInfoMessage "installing package..."
     printGap
 
@@ -309,7 +309,7 @@ y | Y)
     sudo chmod g+rwx "$HOME/.docker" -R
   else
 
-    printSuccessMessage "PACKAGE EXISTS"
+    printSuccessMessage "Package exists"
     printNameAndValue "DOCKER_EXISTS" "${DOCKER_EXISTS}"
     printGap
   fi
@@ -333,7 +333,7 @@ y | Y)
   printGap
   MINIKUBE_EXISTS=$(resolveIfPackageIsInstalled minikube)
   if [ -z "${MINIKUBE_EXISTS}" ]; then
-    printWarningMessage "PACKAGE DOES NOT EXIST"
+    printWarningMessage "Package does not exist"
     printInfoMessage "installing package..."
     printGap
 
@@ -343,7 +343,7 @@ y | Y)
     # set bash autocompletion
     echo "source <(minikube completion bash)" >>~/.bashrc # add autocomplete permanently to your bash shell.
   else
-    printSuccessMessage "PACKAGE EXISTS"
+    printSuccessMessage "Package exists"
     printNameAndValue "MINIKUBE_EXISTS" "${MINIKUBE_EXISTS}"
     printGap
   fi
@@ -367,7 +367,7 @@ y | Y)
   printGap
   KUBECTL_EXISTS=$(resolveIfPackageIsInstalled kubectl)
   if [ -z "${KUBECTL_EXISTS}" ]; then
-    printWarningMessage "PACKAGE DOES NOT EXIST"
+    printWarningMessage "Package does not exist"
     printInfoMessage "installing package..."
     printGap
 
@@ -379,7 +379,7 @@ y | Y)
     # set bash autocompletion
     echo "source <(kubectl completion bash)" >>~/.bashrc # add autocomplete permanently to your bash shell.
   else
-    printSuccessMessage "PACKAGE EXISTS"
+    printSuccessMessage "Package exists"
     printNameAndValue "KUBECTL_EXISTS" "${KUBECTL_EXISTS}"
     printGap
   fi
@@ -403,7 +403,7 @@ y | Y)
   printGap
   HELM_EXISTS=$(installSnapPackage helm)
   if [ -z "${HELM_EXISTS}" ]; then
-    printWarningMessage "PACKAGE DOES NOT EXIST"
+    printWarningMessage "Package does not exist"
     printInfoMessage "installing package..."
     printGap
 
@@ -411,7 +411,7 @@ y | Y)
     # set bash autocompletion
     echo "source <(helm completion bash)" >>~/.bashrc # add autocomplete permanently to your bash shell.
   else
-    printSuccessMessage "PACKAGE EXISTS"
+    printSuccessMessage "Package exists"
     printNameAndValue "HELM_EXISTS" "${HELM_EXISTS}"
     printGap
   fi
@@ -424,7 +424,7 @@ n | N)
   ;;
 esac
 
-## install nodejs v14, and build essential for compiling and installing native addons
+## install nodejs v16, and build essential for compiling and installing native addons
 printInfoTitle "Install nodejs v14, and build-essential, and update npm to latest version"
 printGap
 read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
@@ -436,16 +436,16 @@ y | Y)
 
   NODE_EXISTS=$(resolveIfPackageIsInstalled nodejs)
   if [ -z "${NODE_EXISTS}" ]; then
-    printWarningMessage "PACKAGE DOES NOT EXIST"
+    printWarningMessage "Package does not exist"
     printInfoMessage "installing package..."
     printGap
 
-    curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+    curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
     sudo apt install -y nodejs
     installAptPackage build-essential
     sudo npm install -g npm
   else
-    printSuccessMessage "PACKAGE EXISTS"
+    printSuccessMessage "Package exists"
     printNameAndValue "NODE_EXISTS" "${NODE_EXISTS}"
     printGap
   fi
@@ -527,7 +527,7 @@ y | Y)
 
   VSCODE_EXTENSION_EXISTS=$(resolveIfPackageIsInstalled code)
   if [ -z "${VSCODE_EXTENSION_EXISTS}" ]; then
-    printWarningMessage "PACKAGE DOES NOT EXIST"
+    printWarningMessage "Package does not exist"
     printInfoMessage "installing package..."
     printGap
 
@@ -571,7 +571,7 @@ y | Y)
     code --install-extension rbbit.typescript-hero
     code --install-extension redhat.vscode-yaml
   else
-    printSuccessMessage "PACKAGE EXISTS"
+    printSuccessMessage "Package exists"
     printNameAndValue "VSCODE_EXTENSION_EXISTS" "${VSCODE_EXTENSION_EXISTS}"
     printGap
   fi
