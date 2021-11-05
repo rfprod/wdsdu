@@ -42,7 +42,7 @@ optionalUserChoice() {
 ##
 # Notifies user of cancelled installation.
 ##
-notifyUserOfCancelledInstallation() {
+installationCancelled() {
   printf "\n
     ${LIGHT_CYAN}  >> cancelled by user, user choice: ${RED}%s
     ${DEFAULT}\n\n" "${1}"
@@ -51,13 +51,13 @@ notifyUserOfCancelledInstallation() {
 ##
 # Checks if package is installed and takes respective action.
 ##
-checkIfPackageIsInstalledAndInstall() {
+installAptPackage() {
   printInfoMessage "Checking if package is installed ${1}"
   printGap
 
   PACKAGE_EXISTS=$(dpkg -s "$1")
   if [ -z "${PACKAGE_EXISTS}" ]; then
-    printErrorTitle "PACKAGE DOES NOT EXIST"
+    printErrorTitle "Package does not exist"
     printInfoMessage "Installing package..."
     printGap
 
@@ -68,7 +68,7 @@ checkIfPackageIsInstalledAndInstall() {
       source /etc/bash_completion
     fi
   else
-    printSuccessTitle "PACKAGE EXISTS"
+    printSuccessTitle "Package exists"
     printGap
   fi
 }
@@ -118,7 +118,7 @@ checkIfGlobalNpmDependencyIsInstalledAndInstall() {
 resolveIfSNAPPackageIsInstalled() {
   SNAP_EXISTS=$(snap find "$1")
   if [ "${SNAP_EXISTS}" == "No matching snaps for ""${1}""" ]; then
-    printErrorTitle "PACKAGE DOES NOT EXIST"
+    printErrorTitle "Package does not exist"
     printGap
   else
     echo "${SNAP_EXISTS}"
@@ -128,11 +128,11 @@ resolveIfSNAPPackageIsInstalled() {
 ##
 # Checks if snap package is installed.
 ##
-checkIfSNAPPackageIsInstalledAndInstall() {
+installSnapPackage() {
   DEPENDENCY_NAME=$1
   SNAP_EXISTS=$(snap find "$DEPENDENCY_NAME")
   if [ "${SNAP_EXISTS}" == "No matching snaps for ""${DEPENDENCY_NAME}""" ]; then
-    printErrorTitle "PACKAGE DOES NOT EXIST"
+    printErrorTitle "Package does not exist"
     printInfoMessage "Installing package..."
     printGap
 
@@ -155,33 +155,29 @@ sudo apt update
 printInfoMessage "Installing dependencies required for subsequent installations"
 printGap
 
-checkIfPackageIsInstalledAndInstall apt-transport-https
-checkIfPackageIsInstalledAndInstall ca-certificates
-checkIfPackageIsInstalledAndInstall curl
-checkIfPackageIsInstalledAndInstall software-properties-common
-checkIfPackageIsInstalledAndInstall bash-completion
+installAptPackage apt-transport-https
+installAptPackage ca-certificates
+installAptPackage curl
+installAptPackage software-properties-common
+installAptPackage bash-completion
 
-## install guake, and tmux
 printInfoTitle "Install guake, and tmux"
 printGap
 read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
-  ## notify user, and install
   printInfoMessage "Installing guake, and tmux"
   printGap
 
-  checkIfPackageIsInstalledAndInstall guake
-  checkIfPackageIsInstalledAndInstall tmux
+  installAptPackage guake
+  installAptPackage tmux
   ;;
 n | N)
-  ## explicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 *)
-  ## implicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 esac
 
@@ -192,19 +188,16 @@ read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless can
 defaultUserChoice
 case $userChoice in
 y | Y)
-  ## notify user, and install
   printInfoMessage "Installing freerdp2-x11"
   printGap
 
-  checkIfPackageIsInstalledAndInstall freerdp2-x11
+  installAptPackage freerdp2-x11
   ;;
 n | N)
-  ## explicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 *)
-  ## implicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 esac
 
@@ -215,19 +208,16 @@ read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless can
 defaultUserChoice
 case $userChoice in
 y | Y)
-  ## notify user, and install
   printInfoMessage "Installing chromium-browser"
   printGap
 
-  checkIfSNAPPackageIsInstalledAndInstall "chromium"
+  installSnapPackage "chromium"
   ;;
 n | N)
-  ## explicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 *)
-  ## implicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 esac
 
@@ -238,13 +228,12 @@ read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless can
 defaultUserChoice
 case $userChoice in
 y | Y)
-  ### notify user, and install
   printInfoMessage "Installing google-chrome-stable"
   printGap
 
   CHROME_EXISTS=$(resolveIfPackageIsInstalled google-chrome-stable)
   if [ -z "${CHROME_EXISTS}" ]; then
-    printWarningMessage "PACKAGE DOES NOT EXIST"
+    printWarningMessage "Package does not exist"
     printInfoMessage "installing package"
     printGap
 
@@ -253,18 +242,16 @@ y | Y)
     sudo apt update
     sudo apt install -y google-chrome-stable
   else
-    printSuccessMessage "PACKAGE EXISTS"
+    printSuccessMessage "Package exists"
     printNameAndValue "CHROME_EXISTS" "$CHROME_EXISTS"
     printGap
   fi
   ;;
 n | N)
-  ## explicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 *)
-  ## implicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 esac
 
@@ -275,19 +262,16 @@ read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless can
 defaultUserChoice
 case $userChoice in
 y | Y)
-  ## notify user, and install
   printInfoMessage "Installing git"
   printGap
 
-  checkIfPackageIsInstalledAndInstall git
+  installAptPackage git
   ;;
 n | N)
-  ## explicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 *)
-  ## implicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 esac
 
@@ -298,12 +282,11 @@ read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless can
 defaultUserChoice
 case $userChoice in
 y | Y)
-  ## notify user, and install
   printInfoMessage "Installing docker"
   printGap
   DOCKER_EXISTS=$(resolveIfPackageIsInstalled docker-ce)
   if [ -z "${DOCKER_EXISTS}" ]; then
-    printWarningMessage "PACKAGE DOES NOT EXIST"
+    printWarningMessage "Package does not exist"
     printInfoMessage "installing package..."
     printGap
 
@@ -326,18 +309,16 @@ y | Y)
     sudo chmod g+rwx "$HOME/.docker" -R
   else
 
-    printSuccessMessage "PACKAGE EXISTS"
+    printSuccessMessage "Package exists"
     printNameAndValue "DOCKER_EXISTS" "${DOCKER_EXISTS}"
     printGap
   fi
   ;;
 n | N)
-  ## explicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 *)
-  ## implicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 esac
 
@@ -348,12 +329,11 @@ read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless can
 defaultUserChoice
 case $userChoice in
 y | Y)
-  ## notify user, and install
   printInfoMessage "Installing minikube"
   printGap
   MINIKUBE_EXISTS=$(resolveIfPackageIsInstalled minikube)
   if [ -z "${MINIKUBE_EXISTS}" ]; then
-    printWarningMessage "PACKAGE DOES NOT EXIST"
+    printWarningMessage "Package does not exist"
     printInfoMessage "installing package..."
     printGap
 
@@ -363,18 +343,16 @@ y | Y)
     # set bash autocompletion
     echo "source <(minikube completion bash)" >>~/.bashrc # add autocomplete permanently to your bash shell.
   else
-    printSuccessMessage "PACKAGE EXISTS"
+    printSuccessMessage "Package exists"
     printNameAndValue "MINIKUBE_EXISTS" "${MINIKUBE_EXISTS}"
     printGap
   fi
   ;;
 n | N)
-  ## explicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 *)
-  ## implicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 esac
 
@@ -385,12 +363,11 @@ read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless can
 defaultUserChoice
 case $userChoice in
 y | Y)
-  ## notify user, and install
   printInfoMessage "Installing kubectl"
   printGap
   KUBECTL_EXISTS=$(resolveIfPackageIsInstalled kubectl)
   if [ -z "${KUBECTL_EXISTS}" ]; then
-    printWarningMessage "PACKAGE DOES NOT EXIST"
+    printWarningMessage "Package does not exist"
     printInfoMessage "installing package..."
     printGap
 
@@ -402,18 +379,16 @@ y | Y)
     # set bash autocompletion
     echo "source <(kubectl completion bash)" >>~/.bashrc # add autocomplete permanently to your bash shell.
   else
-    printSuccessMessage "PACKAGE EXISTS"
+    printSuccessMessage "Package exists"
     printNameAndValue "KUBECTL_EXISTS" "${KUBECTL_EXISTS}"
     printGap
   fi
   ;;
 n | N)
-  ## explicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 *)
-  ## implicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 esac
 
@@ -424,12 +399,11 @@ read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless can
 defaultUserChoice
 case $userChoice in
 y | Y)
-  ## notify user, and install
   printInfoMessage "Installing helm"
   printGap
-  HELM_EXISTS=$(checkIfSNAPPackageIsInstalledAndInstall helm)
+  HELM_EXISTS=$(installSnapPackage helm)
   if [ -z "${HELM_EXISTS}" ]; then
-    printWarningMessage "PACKAGE DOES NOT EXIST"
+    printWarningMessage "Package does not exist"
     printInfoMessage "installing package..."
     printGap
 
@@ -437,55 +411,50 @@ y | Y)
     # set bash autocompletion
     echo "source <(helm completion bash)" >>~/.bashrc # add autocomplete permanently to your bash shell.
   else
-    printSuccessMessage "PACKAGE EXISTS"
+    printSuccessMessage "Package exists"
     printNameAndValue "HELM_EXISTS" "${HELM_EXISTS}"
     printGap
   fi
   ;;
 n | N)
-  ## explicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 *)
-  ## implicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 esac
 
-## install nodejs v14, and build essential for compiling and installing native addons
+## install nodejs v16, and build essential for compiling and installing native addons
 printInfoTitle "Install nodejs v14, and build-essential, and update npm to latest version"
 printGap
 read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
-  ## notify user, and install
   printInfoMessage "Installing nodejs v14, build-essential, and updating npm"
   printGap
 
   NODE_EXISTS=$(resolveIfPackageIsInstalled nodejs)
   if [ -z "${NODE_EXISTS}" ]; then
-    printWarningMessage "PACKAGE DOES NOT EXIST"
+    printWarningMessage "Package does not exist"
     printInfoMessage "installing package..."
     printGap
 
-    curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+    curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
     sudo apt install -y nodejs
-    checkIfPackageIsInstalledAndInstall build-essential
+    installAptPackage build-essential
     sudo npm install -g npm
   else
-    printSuccessMessage "PACKAGE EXISTS"
+    printSuccessMessage "Package exists"
     printNameAndValue "NODE_EXISTS" "${NODE_EXISTS}"
     printGap
   fi
   ;;
 n | N)
-  ## explicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 *)
-  ## implicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 esac
 
@@ -517,12 +486,10 @@ y | Y)
   checkIfGlobalNpmDependencyIsInstalledAndInstall "@compodoc/compodoc"
   ;;
 n | N)
-  ## explicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 *)
-  ## implicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 esac
 
@@ -533,21 +500,18 @@ read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless can
 defaultUserChoice
 case $userChoice in
 y | Y)
-  ## notify user, and install
   printInfoMessage "Installing flutter"
   printGap
 
-  checkIfPackageIsInstalledAndInstall snapd
-  checkIfSNAPPackageIsInstalledAndInstall "flutter"
+  installAptPackage snapd
+  installSnapPackage "flutter"
   installAvd
   ;;
 n | N)
-  ## explicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 *)
-  ## implicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 esac
 
@@ -558,13 +522,12 @@ read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless con
 defaultUserChoice
 case $userChoice in
 y | Y)
-  ## notify user, and install
   printInfoMessage "Installing vscode"
   printGap
 
   VSCODE_EXTENSION_EXISTS=$(resolveIfPackageIsInstalled code)
   if [ -z "${VSCODE_EXTENSION_EXISTS}" ]; then
-    printWarningMessage "PACKAGE DOES NOT EXIST"
+    printWarningMessage "Package does not exist"
     printInfoMessage "installing package..."
     printGap
 
@@ -608,17 +571,15 @@ y | Y)
     code --install-extension rbbit.typescript-hero
     code --install-extension redhat.vscode-yaml
   else
-    printSuccessMessage "PACKAGE EXISTS"
+    printSuccessMessage "Package exists"
     printNameAndValue "VSCODE_EXTENSION_EXISTS" "${VSCODE_EXTENSION_EXISTS}"
     printGap
   fi
   ;;
 n | N)
-  ## explicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 *)
-  ## implicitly cancelled by user
-  notifyUserOfCancelledInstallation "${userChoice}"
+  installationCancelled "${userChoice}"
   ;;
 esac
