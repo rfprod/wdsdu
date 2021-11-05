@@ -75,7 +75,7 @@ installAvd() {
     } >>"$BASHRC_PATH"
   fi
 
-  SDK_ZIP_PATH="${HOME}/Downloads/commandlinetools-linux-6858069_latest.zip"
+  SDK_ZIP_PATH="${HOME}/Downloads/commandlinetools-linux-7583922_latest.zip"
 
   # download android sdk tools
   printInfoTitle "Downloading (if needed), and unpacking Android SDK Tools"
@@ -85,17 +85,14 @@ installAvd() {
     ##
     # If wget fails find lates here: https://developer.android.com/studio#downloads
     ##
-    wget https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip -O "${SDK_ZIP_PATH}"
+    wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip -O "${SDK_ZIP_PATH}"
   fi
   unzip "${SDK_ZIP_PATH}" -d "${HOME}/Downloads"
 
   # create android sdk tools
   printInfoTitle "Creating Android SDK Tools directory"
   printGap
-  mkdir "${HOME}/android"
-  mkdir "${HOME}/android/sdk"
-  mkdir "${HOME}/android/sdk/cmdline-tools"
-  mkdir "${HOME}/android/sdk/cmdline-tools/latest"
+  mkdir -p "${HOME}/android/sdk/cmdline-tools/latest"
 
   # set ANDROID_HOME
   printInfoTitle "Setting ANDROID_HOME system environment variable"
