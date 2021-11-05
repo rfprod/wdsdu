@@ -131,7 +131,7 @@ installAvd() {
   yes | "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --licenses
 
   # install sdk tools
-  printInfoTitle "Installing Android SDK Platform 29 or later, Android SDK Build-Tools 28.0.3 or later, Android Support Repository, Google Repository"
+  printInfoTitle "Installing Android SDK Platform 30 or later, Android SDK Build-Tools 28.0.3 or later, Android Support Repository, Google Repository"
   printGap
   "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --install "tools" "platform-tools" "platforms;android-29" "build-tools;28.0.3" "extras;android;m2repository" "extras;google;m2repository"
 
@@ -144,7 +144,7 @@ installAvd() {
   # install images
   printInfoTitle "Installing Android images"
   printGap
-  "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager "system-images;android-25;google_apis;x86"
+  "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager "system-images;android-30;google_apis;x86"
 
   # list available targets
   printInfoTitle "Listing available targets"
@@ -154,7 +154,7 @@ installAvd() {
   # create avd
   printInfoTitle "Creating avd"
   printGap
-  "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" create avd -n api25device -k "system-images;android-25;google_apis;x86"
+  "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" create avd -n api30device -k "system-images;android-30;google_apis;x86"
 
   # list created avds
   printInfoTitle "Listing available avds"
