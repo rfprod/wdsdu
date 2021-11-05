@@ -125,15 +125,15 @@ installAvd() {
   # shellcheck disable=SC1091
   source "$BASHRC_PATH"
 
-  # install sdk tools
-  printInfoTitle "Installing Android SDK Platform 29 or later, Android SDK Build-Tools 28.0.2 or later, Android Support Repository, Google Repository"
-  printGap
-  "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --install "tools" "platform-tools" "platforms;android-29" "build-tools;28.0.2" "extras;android;m2repository" "extras;google;m2repository"
-
   # batch accept licenses
   printInfoTitle "Sdk manager: batch accept licenses"
   printGap
   yes | "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --licenses
+
+  # install sdk tools
+  printInfoTitle "Installing Android SDK Platform 29 or later, Android SDK Build-Tools 28.0.2 or later, Android Support Repository, Google Repository"
+  printGap
+  "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --install "tools" "platform-tools" "platforms;android-29" "build-tools;28.0.2" "extras;android;m2repository" "extras;google;m2repository"
 
   # touch repositories config to avoid getting error about /root/.android/repositories.cfg missing
   printInfoTitle "Touching /root/.android/repositories.cfg file to avoid missing file error"
