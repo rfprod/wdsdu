@@ -109,7 +109,7 @@ installAvd() {
     printGap
     {
       echo "# android sdk variables"
-      echo "export ANDROID_HOME=/home/suser/android/sdk"
+      echo "export ANDROID_HOME=~/android/sdk"
     } >>"$BASHRC_PATH"
   fi
 
