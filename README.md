@@ -12,6 +12,10 @@ In order to run own copy of the project one must fulfill the following requireme
 
 - [Debian based Linux](https://en.wikipedia.org/wiki/List_of_Linux_distributions#Debian-based)
 
+### Core dependencies
+
+- [Bash 5](https://www.gnu.org/software/bash/)
+
 ### The Script
 
 Can be used to deploy Debian/Ubuntu web-development environment, which includes the following:
