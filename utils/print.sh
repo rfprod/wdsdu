@@ -1,8 +1,5 @@
 #!/bin/bash
 
-##
-# Colors.
-##
 source utils/colors.sh ''
 
 printGap() {
