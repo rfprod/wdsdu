@@ -1,25 +1,10 @@
 #!/bin/bash
 
-##
-# Colors.
-##
-# shellcheck source=utils/colors.sh
 source utils/colors.sh ''
-##
-# Print utils.
-##
-# shellcheck source=utils/print.sh
 source utils/print.sh ''
-
-##
-# Colors.
-##
 source install-avd.sh ''
 
-##
-# User input timeout.
-##
-WAIT_TIMEOUT=6
+USER_INPUT_TIMEOUT=6
 
 ##
 # Sets default user choice value.
@@ -142,16 +127,13 @@ installSnapPackage() {
   fi
 }
 
-## start
 printInfoTitle "This script will install dependencies required for development"
 printGap
 
-## update apt
 printInfoMessage "Updating apt"
 printGap
 sudo apt update
 
-## install dependencies required for subsequent installations
 printInfoMessage "Installing dependencies required for subsequent installations"
 printGap
 
@@ -163,7 +145,7 @@ installAptPackage bash-completion
 
 printInfoTitle "Install guake, and tmux"
 printGap
-read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
+read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unless cancelled (y/n)?" -t $USER_INPUT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
@@ -181,10 +163,9 @@ n | N)
   ;;
 esac
 
-## install freerdp2-x11
 printInfoTitle "Install freerdp2-x11"
 printGap
-read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
+read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unless cancelled (y/n)?" -t $USER_INPUT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
@@ -201,10 +182,9 @@ n | N)
   ;;
 esac
 
-## install chromium-browser
 printInfoTitle "Install chromium"
 printGap
-read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
+read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unless cancelled (y/n)?" -t $USER_INPUT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
@@ -221,10 +201,9 @@ n | N)
   ;;
 esac
 
-## install google-chrome-stable
 printInfoTitle "Install google-chrome-stable"
 printGap
-read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
+read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unless cancelled (y/n)?" -t $USER_INPUT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
@@ -255,10 +234,9 @@ n | N)
   ;;
 esac
 
-## install git
 printInfoTitle "Install git"
 printGap
-read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
+read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unless cancelled (y/n)?" -t $USER_INPUT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
@@ -275,10 +253,9 @@ n | N)
   ;;
 esac
 
-## install docker stable, remove old first
 printInfoTitle "Install docker"
 printGap
-read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
+read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unless cancelled (y/n)?" -t $USER_INPUT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
@@ -301,7 +278,9 @@ y | Y)
     sudo apt update
     sudo apt install -y docker-ce
 
-    # add ability to ru docker commands without sudo
+    printInfoMessage "configuring docker to run without sudo..."
+    printGap
+
     sudo groupadd docker
     sudo usermod -aG docker "$USER"
     newgrp docker
@@ -322,10 +301,9 @@ n | N)
   ;;
 esac
 
-## install minikube
 printInfoTitle "Install minikube"
 printGap
-read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
+read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unless cancelled (y/n)?" -t $USER_INPUT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
@@ -340,8 +318,11 @@ y | Y)
     # use a subshell to download curl to the ~/Downloads directory
     (cd ~/Downloads && curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb)
     sudo dpkg -i ~/Downloads/minikube_latest_amd64.deb
-    # set bash autocompletion
-    echo "source <(minikube completion bash)" >>~/.bashrc # add autocomplete permanently to your bash shell.
+
+    printInfoMessage "setting up minikube bash completion..."
+    printGap
+
+    echo "source <(minikube completion bash)" >>~/.bashrc
   else
     printSuccessMessage "Package exists"
     printNameAndValue "MINIKUBE_EXISTS" "${MINIKUBE_EXISTS}"
@@ -356,10 +337,9 @@ n | N)
   ;;
 esac
 
-## install kubectl
 printInfoTitle "Install kubectl"
 printGap
-read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
+read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unless cancelled (y/n)?" -t $USER_INPUT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
@@ -376,8 +356,11 @@ y | Y)
 
     sudo apt update
     sudo apt install -y kubectl
-    # set bash autocompletion
-    echo "source <(kubectl completion bash)" >>~/.bashrc # add autocomplete permanently to your bash shell.
+
+    printInfoMessage "setting up kubectl bash completion..."
+    printGap
+
+    echo "source <(kubectl completion bash)" >>~/.bashrc
   else
     printSuccessMessage "Package exists"
     printNameAndValue "KUBECTL_EXISTS" "${KUBECTL_EXISTS}"
@@ -392,10 +375,9 @@ n | N)
   ;;
 esac
 
-## install helm
 printInfoTitle "Install helm"
 printGap
-read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
+read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unless cancelled (y/n)?" -t $USER_INPUT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
@@ -408,8 +390,11 @@ y | Y)
     printGap
 
     sudo snap install helm --classic
-    # set bash autocompletion
-    echo "source <(helm completion bash)" >>~/.bashrc # add autocomplete permanently to your bash shell.
+
+    printInfoMessage "setting up helm bash completion..."
+    printGap
+
+    echo "source <(helm completion bash)" >>~/.bashrc
   else
     printSuccessMessage "Package exists"
     printNameAndValue "HELM_EXISTS" "${HELM_EXISTS}"
@@ -424,14 +409,13 @@ n | N)
   ;;
 esac
 
-## install nodejs v16, and build essential for compiling and installing native addons
-printInfoTitle "Install nodejs v14, and build-essential, and update npm to latest version"
+printInfoTitle "Install nodejs v16, and build-essential, and update npm to latest version"
 printGap
-read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
+read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unless cancelled (y/n)?" -t $USER_INPUT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
-  printInfoMessage "Installing nodejs v14, build-essential, and updating npm"
+  printInfoMessage "Installing nodejs v16, build-essential, and updating npm"
   printGap
 
   NODE_EXISTS=$(resolveIfPackageIsInstalled nodejs)
@@ -458,10 +442,9 @@ n | N)
   ;;
 esac
 
-## install global npm dependencies
 printInfoTitle "Install global npm dependencies"
 printGap
-read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
+read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unless cancelled (y/n)?" -t $USER_INPUT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
@@ -470,20 +453,33 @@ y | Y)
 
   notifyOfInstalledGlobalNpmDependencies
 
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "bazel"
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "clang-format"
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "cz-conventional-changelog"
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "firebase-tools"
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "jscodeshift"
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "npm-check-updates"
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "svgo"
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "typescript"
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "yarn"
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "@angular/cli"
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "@nestjs/cli"
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "@ngxs/cli"
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "@nrwl/cli"
-  checkIfGlobalNpmDependencyIsInstalledAndInstall "@compodoc/compodoc"
+  declare -A GLOBAL_NPM_DEPENDENCIES=(
+    ["@angular/cli"]="@angular/cli"
+    ["@compodoc/compodoc"]="@compodoc/compodoc"
+    ["@nestjs/cli"]="@nestjs/cli"
+    ["@ngxs/cli"]="@ngxs/cli"
+    ["@nrwl/cli"]="@nrwl/cli"
+    ["asar"]="asar"
+    ["bazel"]="bazel"
+    ["clang-format"]="clang-format"
+    ["commitizen"]="commitizen"
+    ["corepack"]="corepack"
+    ["cz-conventional-changelog"]="cz-conventional-changelog"
+    ["firebase-tools"]="firebase-tools"
+    ["grpcc"]="grpcc"
+    ["madge"]="madge"
+    ["npm-check-updates"]="npm-check-updates"
+    ["svgo"]="svgo"
+    ["typescript"]="typescript"
+    ["yarn"]="yarn"
+  )
+
+  for GLOBAL_NPM_DEPENDENCY in "${!GLOBAL_NPM_DEPENDENCIES[@]}"; do
+    printInfoMessage "installing global npm dependency $GLOBAL_NPM_DEPENDENCY..."
+    printGap
+
+    checkIfGlobalNpmDependencyIsInstalledAndInstall "$GLOBAL_NPM_DEPENDENCY"
+  done
   ;;
 n | N)
   installationCancelled "${userChoice}"
@@ -493,10 +489,9 @@ n | N)
   ;;
 esac
 
-## install flutter + avd
 printInfoTitle "Install flutter + avd"
 printGap
-read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless cancelled (y/n)?" -t $WAIT_TIMEOUT userChoice
+read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unless cancelled (y/n)?" -t $USER_INPUT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
@@ -515,10 +510,9 @@ n | N)
   ;;
 esac
 
-## install vscode
 printInfoTitle "Install vscode"
 printGap
-read -r -p "    > confirm, will be installed in $WAIT_TIMEOUT seconds unless confirmed (y/n)?" -t $WAIT_TIMEOUT userChoice
+read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unless confirmed (y/n)?" -t $USER_INPUT_TIMEOUT userChoice
 defaultUserChoice
 case $userChoice in
 y | Y)
@@ -537,39 +531,52 @@ y | Y)
     sudo apt-get update
     sudo apt-get install code
 
-    # install vscode packages
-    code --install-extension nrwl.angular-console
-    code --install-extension angular.ng-template
-    code --install-extension johnpapa.angular-essentials
-    code --install-extension pkief.material-icon-theme
-    code --install-extension atishay-jain.all-autocomplete
-    code --install-extension johnpapa.vscode-peacock
-    code --install-extension pmneo.tsimporter
-    code --install-extension christian-kohler.path-intellisense
-    code --install-extension sadesyllas.vscode-workspace-switcher
-    code --install-extension editorconfig.editorconfig
-    code --install-extension mikestead.dotenv
-    code --install-extension shd101wyy.markdown-preview-enhanced
-    code --install-extension tomoyukim.vscode-mermaid-editor
-    code --install-extension eg2.vscode-npm-script
-    code --install-extension ms-azuretools.vscode-docker
-    code --install-extension dbaeumer.vscode-eslint
-    code --install-extension esbenp.prettier-vscode
-    code --install-extension ghaschel.vscode-angular-html
-    code --install-extension natewallace.angular2-inline
-    code --install-extension johnpapa.angular2
-    code --install-extension zxh404.vscode-proto3
-    code --install-extension plex.vscode-protolint
-    code --install-extension xaver.clang-format
-    code --install-extension devondcarew.bazel-code
-    code --install-extension foxundermoon.shell-format
-    code --install-extension timonwong.shellcheck
-    code --install-extension stepsize.tech-debt-tracker
-    code --install-extension stylelint.vscode-stylelint
-    code --install-extension dart-code.dart-code
-    code --install-extension dart-code.flutter
-    code --install-extension rbbit.typescript-hero
-    code --install-extension redhat.vscode-yaml
+    declare -A VSCODE_EXTENSIONS=(
+      ["atishay-jain.all-autocomplete"]="atishay-jain.all-autocomplete"
+      ["johnpapa.angular-essentials"]="johnpapa.angular-essentials"
+      ["angular.ng-template"]="angular.ng-template"
+      ["johnpapa.angular2"]="johnpapa.angular2"
+      ["natewallace.angular2-inline"]="natewallace.angular2-inline"
+      ["xaver.clang-format"]="xaver.clang-format"
+      ["jasonnutter.vscode-codeowners"]="jasonnutter.vscode-codeowners"
+      ["dart-code.dart-code"]="dart-code.dart-code"
+      ["ms-azuretools.vscode-docker"]="ms-azuretools.vscode-docker"
+      ["mikestead.dotenv"]="mikestead.dotenv"
+      ["editorconfig.editorconfig"]="editorconfig.editorconfig"
+      ["dbaeumer.vscode-eslint"]="dbaeumer.vscode-eslint"
+      ["dart-code.flutter"]="dart-code.flutter"
+      ["hashicorp.terraform"]="hashicorp.terraform"
+      ["firsttris.vscode-jest-runner"]="firsttris.vscode-jest-runner"
+      ["shd101wyy.markdown-preview-enhanced"]="shd101wyy.markdown-preview-enhanced"
+      ["pkief.material-icon-theme"]="pkief.material-icon-theme"
+      ["tomoyukim.vscode-mermaid-editor"]="tomoyukim.vscode-mermaid-editor"
+      ["eg2.vscode-npm-script"]="eg2.vscode-npm-script"
+      ["christian-kohler.path-intellisense"]="christian-kohler.path-intellisense"
+      ["johnpapa.vscode-peacock"]="johnpapa.vscode-peacock"
+      ["esbenp.prettier-vscode"]="esbenp.prettier-vscode"
+      ["plex.vscode-protolint"]="plex.vscode-protolint"
+      ["foxundermoon.shell-format"]="foxundermoon.shell-format"
+      ["timonwong.shellcheck"]="timonwong.shellcheck"
+      ["stylelint.vscode-stylelint"]="stylelint.vscode-stylelint"
+      ["stepsize.tech-debt-tracker"]="stepsize.tech-debt-tracker"
+      ["pmneo.tsimporter"]="pmneo.tsimporter"
+      ["visualstudioexptteam.vscodeintellicode"]="visualstudioexptteam.vscodeintellicode"
+      ["ghaschel.vscode-angular-html"]="ghaschel.vscode-angular-html"
+      ["zxh404.vscode-proto3"]="zxh404.vscode-proto3"
+      ["sadesyllas.vscode-workspace-switcher"]="sadesyllas.vscode-workspace-switcher"
+      ["redhat.vscode-yaml"]="redhat.vscode-yaml"
+      ["nrwl.angular-console"]="nrwl.angular-console"
+      ["devondcarew.bazel-code"]="devondcarew.bazel-code"
+      ["rbbit.typescript-hero"]="rbbit.typescript-hero"
+    )
+
+    for VSCODE_EXTENSION in "${!VSCODE_EXTENSIONS[@]}"; do
+      printInfoMessage "installing vscode extension $VSCODE_EXTENSION..."
+      printGap
+
+      code --install-extension "$VSCODE_EXTENSION"
+    done
+
   else
     printSuccessMessage "Package exists"
     printNameAndValue "VSCODE_EXTENSION_EXISTS" "${VSCODE_EXTENSION_EXISTS}"
