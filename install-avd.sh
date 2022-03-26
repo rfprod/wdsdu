@@ -65,7 +65,7 @@ installAvd() {
     ##
     # If wget fails find latest here: https://developer.android.com/studio#downloads
     ##
-    wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip -O "${SDK_ZIP_PATH}"
+    wget https://dl.google.com/android/repository/commandlinetools-linux-8092744_latest.zip -O "${SDK_ZIP_PATH}"
   fi
   unzip "${SDK_ZIP_PATH}" -d "${HOME}/Downloads"
 
@@ -105,9 +105,9 @@ installAvd() {
   printGap
   yes | "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --licenses
 
-  printInfoTitle "Installing Android SDK Platform 30 or later, Android SDK Build-Tools 28.0.3 or later, Android Support Repository, Google Repository"
+  printInfoTitle "Installing Android SDK Platform 31 or later, Android SDK Build-Tools 30.0.3 or later, Android Support Repository, Google Repository"
   printGap
-  "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --install "tools" "platform-tools" "platforms;android-29" "build-tools;28.0.3" "extras;android;m2repository" "extras;google;m2repository"
+  "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --install "tools" "platform-tools" "platforms;android-31" "build-tools;30.0.2" "extras;android;m2repository" "extras;google;m2repository"
 
   printInfoTitle "Touching /root/.android/repositories.cfg file to avoid missing file error"
   printGap
@@ -124,7 +124,7 @@ installAvd() {
 
   printInfoTitle "Creating avd"
   printGap
-  "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" create avd -n api30device -k "system-images;android-30;google_apis;x86"
+  "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" create avd -n api31device -k "system-images;android-30;google_apis;x86"
 
   printInfoTitle "Listing available avds"
   printGap
