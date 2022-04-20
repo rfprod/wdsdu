@@ -3,16 +3,18 @@
 source utils/colors.sh ''
 source utils/print.sh ''
 
-reportUsage() {
-  printInfoTitle "<< USAGE >>"
+printUsage() {
+  printInfoTitle "<< USAGE ${0} >>"
   printUsageTip "bash install-avd.sh ?" "print help"
   printUsageTip "bash install-avd.sh install" "install avd"
   printGap
 }
 
 installAvd() {
-  printInfoTitle "Checking architecture"
+  printInfoTitle "Checking the architecture..."
   printGap
+
+  local ARCH
   ARCH=$(dpkg --print-architecture)
 
   if [ "$ARCH" = 'amd64' ]; then
@@ -24,26 +26,29 @@ installAvd() {
     printGap
   fi
 
-  printInfoTitle "Installing G++ compiler"
+  printInfoTitle "Installing the G++ compiler..."
   printGap
   sudo apt-get install g++
 
-  printInfoTitle "Installing Open JDK 11"
+  printInfoTitle "Installing the Open JDK 11..."
   printGap
   sudo apt-get install default-jdk openjdk-11-jdk
 
-  printInfoTitle "Configuring JDK"
+  printInfoTitle "Configuring the JDK..."
   printGap
   sudo update-alternatives --config java
 
+  local BASHRC_PATH
   BASHRC_PATH="${HOME}/.bashrc"
 
-  printInfoTitle "Setting JAVA_HOME system environment variable"
+  printInfoTitle "Setting the JAVA_HOME environment variable..."
   printGap
+  local JAVA_HOME_NEW_VALUE
   JAVA_HOME_NEW_VALUE="export JAVA_HOME=$(update-alternatives --query javac | sed -n -e 's/Best: *\(.*\)\/bin\/javac/\1/p')"
   printInfoMessage "JAVA_HOME, new value: ${JAVA_HOME_NEW_VALUE}"
   printGap
   if grep -q "JAVA_HOME" "${BASHRC_PATH}"; then
+    local JAVA_HOME_CURRENT_VALUE
     JAVA_HOME_CURRENT_VALUE=$(grep "^.*JAVA_HOME.*$" "${BASHRC_PATH}")
     printWarningMessage "JAVA_HOME exists, current value: ${JAVA_HOME_CURRENT_VALUE}"
     printGap
@@ -56,9 +61,10 @@ installAvd() {
     } >>"$BASHRC_PATH"
   fi
 
+  local SDK_ZIP_PATH
   SDK_ZIP_PATH="${HOME}/Downloads/commandlinetools-linux-7583922_latest.zip"
 
-  printInfoTitle "Downloading (if needed), and unpacking Android SDK Tools"
+  printInfoTitle "Downloading (if needed), and unpacking the Android SDK Tools..."
   printGap
   sudo apt install wget unzip
   if [ ! -f "${SDK_ZIP_PATH}" ]; then
@@ -69,18 +75,19 @@ installAvd() {
   fi
   unzip "${SDK_ZIP_PATH}" -d "${HOME}/Downloads"
 
-  printInfoTitle "Creating Android SDK Tools directory"
+  printInfoTitle "Creating the Android SDK Tools directory..."
   printGap
   mkdir -p "${HOME}/android/sdk/cmdline-tools/latest"
 
-  printInfoTitle "Setting ANDROID_HOME system environment variable"
+  printInfoTitle "Setting the ANDROID_HOME system environment variable..."
   printGap
   if grep -q "ANDROID_HOME" "${BASHRC_PATH}"; then
+    local ANDROID_HOME_CURRENT_VALUE
     ANDROID_HOME_CURRENT_VALUE=$(grep "^.*ANDROID_HOME.*$" "${BASHRC_PATH}")
     printWarningMessage "ANDROID_HOME exists, current value: ${ANDROID_HOME_CURRENT_VALUE}"
     printGap
   else
-    printInfoTitle "ANDROID_HOME does not exist, setting value"
+    printInfoTitle "ANDROID_HOME does not exist, setting the variable..."
     printGap
     {
       echo "# android sdk variables"
@@ -95,13 +102,13 @@ installAvd() {
   cp "${HOME}/Downloads/cmdline-tools/source.properties" "${HOME}/android/sdk/cmdline-tools/latest"
   cp "${HOME}/Downloads/cmdline-tools/NOTICE.txt" "${HOME}/android/sdk/cmdline-tools/latest"
 
-  printInfoTitle "Applying ${BASHRC_PATH} changes"
+  printInfoTitle "Applying ${BASHRC_PATH} changes..."
   printGap
   # shellcheck source="$HOME"/.bashrc
   # shellcheck disable=SC1091
   source "$BASHRC_PATH"
 
-  printInfoTitle "Sdk manager: batch accept licenses"
+  printInfoTitle "Accepting the SDK manager licenses in bulk..."
   printGap
   yes | "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --licenses
 
@@ -114,29 +121,30 @@ installAvd() {
   sudo mkdir /root/.android || true
   sudo touch /root/.android/repositories.cfg
 
-  printInfoTitle "Installing Android images"
+  printInfoTitle "Installing Android images..."
   printGap
   "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager "system-images;android-30;google_apis;x86"
 
-  printInfoTitle "Listing available targets"
+  printInfoTitle "Listing available targets..."
   printGap
   "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" list target
 
-  printInfoTitle "Creating avd"
+  printInfoTitle "Creating an AVD..."
   printGap
   "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" create avd -n api31device -k "system-images;android-30;google_apis;x86"
 
-  printInfoTitle "Listing available avds"
+  printInfoTitle "Listing available AVDs..."
   printGap
   "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" list avd
 
-  printSuccessTitle "AVD was successfully installed"
+  printSuccessTitle "AVD has been installed successfully."
+  printGap
 
   flutter doctor -v
 }
 
 if [ "$1" = "?" ]; then
-  reportUsage
+  printUsage
 elif [ "$1" = "install" ]; then
   installAvd
 fi
