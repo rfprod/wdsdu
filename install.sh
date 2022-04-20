@@ -7,7 +7,7 @@ source install-avd.sh ''
 USER_INPUT_TIMEOUT=6
 
 ##
-# Sets default user choice value.
+# Sets the default user choice value.
 ##
 defaultUserChoice() {
   if [ -z "$userChoice" ]; then
@@ -16,7 +16,7 @@ defaultUserChoice() {
 }
 
 ##
-# Sets user choice value to no, used for optional installation.
+# Sets the user choice value to 'no', used for optional installations.
 ##
 optionalUserChoice() {
   if [ -z "$userChoice" ]; then
@@ -25,7 +25,7 @@ optionalUserChoice() {
 }
 
 ##
-# Notifies user of cancelled installation.
+# Notifies the user of a cancelled installation.
 ##
 installationCancelled() {
   printf "\n
@@ -34,16 +34,29 @@ installationCancelled() {
 }
 
 ##
-# Checks if package is installed and takes respective action.
+# Checks if a deb package is installed.
 ##
-installAptPackage() {
-  printInfoMessage "Checking if package is installed ${1}"
+checkIfDebPackageIsInstalled() {
+  local PACKAGE_EXISTS
+  PACKAGE_EXISTS=$(dpkg -s "$1")
+  echo "${PACKAGE_EXISTS}"
+}
+
+##
+# Installs a deb package if it is not installed yet.
+##
+installDebPackage() {
+  local PACKAGE_NAME
+  PACKAGE_NAME="$1"
+
+  printInfoMessage "Checking if $PACKAGE_NAME is installed"
   printGap
 
-  PACKAGE_EXISTS=$(dpkg -s "$1")
+  local PACKAGE_EXISTS
+  PACKAGE_EXISTS=$(checkIfDebPackageIsInstalled "$PACKAGE_NAME")
+
   if [ -z "${PACKAGE_EXISTS}" ]; then
-    printErrorTitle "Package does not exist"
-    printInfoMessage "Installing package..."
+    printInfoMessage "$PACKAGE_NAME is not installed. Installing the package..."
     printGap
 
     sudo apt install -y "$1"
@@ -53,23 +66,16 @@ installAptPackage() {
       source /etc/bash_completion
     fi
   else
-    printSuccessTitle "Package exists"
+    printSuccessTitle "$PACKAGE_NAME is already installed"
     printGap
   fi
 }
 
 ##
-# Resolves if package is installed only.
+# Prints installed global npm packages.
 ##
-resolveIfPackageIsInstalled() {
-  PACKAGE_EXISTS=$(dpkg -s "$1")
-  echo "${PACKAGE_EXISTS}"
-}
-
-##
-# Notified of installed global npm packages.
-##
-notifyOfInstalledGlobalNpmDependencies() {
+printInstalledGlobalNpmDependencies() {
+  local DEPS
   DEPS=$(sudo npm list -g --depth=0)
   printSuccessTitle "Installed dependencies:"
   # shellcheck disable=SC2059
@@ -77,13 +83,15 @@ notifyOfInstalledGlobalNpmDependencies() {
 }
 
 ##
-# Checks if global NPM dependency is installed.
+# Installs an npm package globally if it is not installed yet.
 ##
-checkIfGlobalNpmDependencyIsInstalledAndInstall() {
+installGlobalNpmDependency() {
+  local DEPENDENCY_NAME
   DEPENDENCY_NAME=$1
+  local DEPS
   DEPS=$(sudo npm list -g --depth=0)
 
-  printInfoMessage "Dependency check"
+  printInfoMessage "Checking if $DEPENDENCY_NAME is installed"
   printGap
 
   if grep -q "${DEPENDENCY_NAME}"@ <<<"$DEPS"; then
@@ -98,32 +106,23 @@ checkIfGlobalNpmDependencyIsInstalledAndInstall() {
 }
 
 ##
-# Resolves if snap package is installed only.
-##
-resolveIfSNAPPackageIsInstalled() {
-  SNAP_EXISTS=$(snap find "$1")
-  if [ "${SNAP_EXISTS}" == "No matching snaps for ""${1}""" ]; then
-    printErrorTitle "Package does not exist"
-    printGap
-  else
-    echo "${SNAP_EXISTS}"
-  fi
-}
-
-##
-# Checks if snap package is installed.
+# Installs a snap package if it is not installed yet.
 ##
 installSnapPackage() {
-  DEPENDENCY_NAME=$1
-  SNAP_EXISTS=$(snap find "$DEPENDENCY_NAME")
-  if [ "${SNAP_EXISTS}" == "No matching snaps for ""${DEPENDENCY_NAME}""" ]; then
-    printErrorTitle "Package does not exist"
-    printInfoMessage "Installing package..."
+  local PACKAGE_NAME
+  PACKAGE_NAME=$1
+
+  local SNAP_EXISTS
+  SNAP_EXISTS=$(snap find "$PACKAGE_NAME")
+
+  if [ "${SNAP_EXISTS}" == "No matching snaps for ""${PACKAGE_NAME}""" ]; then
+    printInfoMessage "$PACKAGE_NAME is not installed. Installing the package..."
     printGap
 
-    sudo snap install "$DEPENDENCY_NAME" --classic
+    sudo snap install "$PACKAGE_NAME" --classic
   else
-    echo "${SNAP_EXISTS}"
+    printSuccessTitle "$PACKAGE_NAME is already installed"
+    printGap
   fi
 }
 
@@ -137,11 +136,11 @@ sudo apt update
 printInfoMessage "Installing dependencies required for subsequent installations"
 printGap
 
-installAptPackage apt-transport-https
-installAptPackage ca-certificates
-installAptPackage curl
-installAptPackage software-properties-common
-installAptPackage bash-completion
+installDebPackage apt-transport-https
+installDebPackage ca-certificates
+installDebPackage curl
+installDebPackage software-properties-common
+installDebPackage bash-completion
 
 printInfoTitle "Install guake, and tmux"
 printGap
@@ -149,11 +148,8 @@ read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unle
 defaultUserChoice
 case $userChoice in
 y | Y)
-  printInfoMessage "Installing guake, and tmux"
-  printGap
-
-  installAptPackage guake
-  installAptPackage tmux
+  installDebPackage guake
+  installDebPackage tmux
   ;;
 n | N)
   installationCancelled "${userChoice}"
@@ -169,10 +165,7 @@ read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unle
 defaultUserChoice
 case $userChoice in
 y | Y)
-  printInfoMessage "Installing freerdp2-x11"
-  printGap
-
-  installAptPackage freerdp2-x11
+  installDebPackage freerdp2-x11
   ;;
 n | N)
   installationCancelled "${userChoice}"
@@ -188,9 +181,6 @@ read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unle
 defaultUserChoice
 case $userChoice in
 y | Y)
-  printInfoMessage "Installing chromium-browser"
-  printGap
-
   installSnapPackage "chromium"
   ;;
 n | N)
@@ -207,13 +197,9 @@ read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unle
 defaultUserChoice
 case $userChoice in
 y | Y)
-  printInfoMessage "Installing google-chrome-stable"
-  printGap
-
-  CHROME_EXISTS=$(resolveIfPackageIsInstalled google-chrome-stable)
+  CHROME_EXISTS=$(checkIfDebPackageIsInstalled google-chrome-stable)
   if [ -z "${CHROME_EXISTS}" ]; then
-    printWarningMessage "Package does not exist"
-    printInfoMessage "installing package"
+    printInfoMessage "The package is not installed. Installing the package..."
     printGap
 
     wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
@@ -221,8 +207,8 @@ y | Y)
     sudo apt update
     sudo apt install -y google-chrome-stable
   else
-    printSuccessMessage "Package exists"
-    printNameAndValue "CHROME_EXISTS" "$CHROME_EXISTS"
+    printSuccessMessage "The package is already installed."
+    printNameAndValue "CHROME_EXISTS" "${CHROME_EXISTS}"
     printGap
   fi
   ;;
@@ -240,10 +226,7 @@ read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unle
 defaultUserChoice
 case $userChoice in
 y | Y)
-  printInfoMessage "Installing git"
-  printGap
-
-  installAptPackage git
+  installDebPackage git
   ;;
 n | N)
   installationCancelled "${userChoice}"
@@ -259,12 +242,9 @@ read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unle
 defaultUserChoice
 case $userChoice in
 y | Y)
-  printInfoMessage "Installing docker"
-  printGap
-  DOCKER_EXISTS=$(resolveIfPackageIsInstalled docker-ce)
+  DOCKER_EXISTS=$(checkIfDebPackageIsInstalled docker-ce)
   if [ -z "${DOCKER_EXISTS}" ]; then
-    printWarningMessage "Package does not exist"
-    printInfoMessage "installing package..."
+    printInfoMessage "The package is not installed. Installing the package..."
     printGap
 
     sudo apt remove -y docker docker-engine docker.io
@@ -278,7 +258,7 @@ y | Y)
     sudo apt update
     sudo apt install -y docker-ce
 
-    printInfoMessage "configuring docker to run without sudo..."
+    printInfoMessage "Configuring docker to run without sudo..."
     printGap
 
     sudo groupadd docker
@@ -287,8 +267,7 @@ y | Y)
     sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
     sudo chmod g+rwx "$HOME/.docker" -R
   else
-
-    printSuccessMessage "Package exists"
+    printSuccessMessage "The package is already installed."
     printNameAndValue "DOCKER_EXISTS" "${DOCKER_EXISTS}"
     printGap
   fi
@@ -307,24 +286,21 @@ read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unle
 defaultUserChoice
 case $userChoice in
 y | Y)
-  printInfoMessage "Installing minikube"
-  printGap
-  MINIKUBE_EXISTS=$(resolveIfPackageIsInstalled minikube)
+  MINIKUBE_EXISTS=$(checkIfDebPackageIsInstalled minikube)
   if [ -z "${MINIKUBE_EXISTS}" ]; then
-    printWarningMessage "Package does not exist"
-    printInfoMessage "installing package..."
+    printInfoMessage "The package is not installed. Installing the package..."
     printGap
 
     # use a subshell to download curl to the ~/Downloads directory
     (cd ~/Downloads && curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb)
     sudo dpkg -i ~/Downloads/minikube_latest_amd64.deb
 
-    printInfoMessage "setting up minikube bash completion..."
+    printInfoMessage "Setting up minikube bash completion..."
     printGap
 
     echo "source <(minikube completion bash)" >>~/.bashrc
   else
-    printSuccessMessage "Package exists"
+    printSuccessMessage "The package is already installed."
     printNameAndValue "MINIKUBE_EXISTS" "${MINIKUBE_EXISTS}"
     printGap
   fi
@@ -343,12 +319,9 @@ read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unle
 defaultUserChoice
 case $userChoice in
 y | Y)
-  printInfoMessage "Installing kubectl"
-  printGap
-  KUBECTL_EXISTS=$(resolveIfPackageIsInstalled kubectl)
+  KUBECTL_EXISTS=$(checkIfDebPackageIsInstalled kubectl)
   if [ -z "${KUBECTL_EXISTS}" ]; then
-    printWarningMessage "Package does not exist"
-    printInfoMessage "installing package..."
+    printInfoMessage "The package is not installed. Installing the package..."
     printGap
 
     sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
@@ -357,12 +330,12 @@ y | Y)
     sudo apt update
     sudo apt install -y kubectl
 
-    printInfoMessage "setting up kubectl bash completion..."
+    printInfoMessage "Setting up kubectl bash completion..."
     printGap
 
     echo "source <(kubectl completion bash)" >>~/.bashrc
   else
-    printSuccessMessage "Package exists"
+    printSuccessMessage "The package is already installed."
     printNameAndValue "KUBECTL_EXISTS" "${KUBECTL_EXISTS}"
     printGap
   fi
@@ -381,22 +354,19 @@ read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unle
 defaultUserChoice
 case $userChoice in
 y | Y)
-  printInfoMessage "Installing helm"
-  printGap
   HELM_EXISTS=$(installSnapPackage helm)
   if [ -z "${HELM_EXISTS}" ]; then
-    printWarningMessage "Package does not exist"
-    printInfoMessage "installing package..."
+    printInfoMessage "The package is not installed. Installing the package..."
     printGap
 
     sudo snap install helm --classic
 
-    printInfoMessage "setting up helm bash completion..."
+    printInfoMessage "Setting up helm bash completion..."
     printGap
 
     echo "source <(helm completion bash)" >>~/.bashrc
   else
-    printSuccessMessage "Package exists"
+    printSuccessMessage "The package is already installed."
     printNameAndValue "HELM_EXISTS" "${HELM_EXISTS}"
     printGap
   fi
@@ -415,21 +385,17 @@ read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unle
 defaultUserChoice
 case $userChoice in
 y | Y)
-  printInfoMessage "Installing nodejs v16, build-essential, and updating npm"
-  printGap
-
-  NODE_EXISTS=$(resolveIfPackageIsInstalled nodejs)
+  NODE_EXISTS=$(checkIfDebPackageIsInstalled nodejs)
   if [ -z "${NODE_EXISTS}" ]; then
-    printWarningMessage "Package does not exist"
-    printInfoMessage "installing package..."
+    printInfoMessage "The package is not installed. Installing the package..."
     printGap
 
     curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
     sudo apt install -y nodejs
-    installAptPackage build-essential
+    installDebPackage build-essential
     sudo npm install -g npm
   else
-    printSuccessMessage "Package exists"
+    printSuccessMessage "The package is already installed."
     printNameAndValue "NODE_EXISTS" "${NODE_EXISTS}"
     printGap
   fi
@@ -448,10 +414,7 @@ read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unle
 defaultUserChoice
 case $userChoice in
 y | Y)
-  printInfoMessage "Installing global npm dependencies"
-  printGap
-
-  notifyOfInstalledGlobalNpmDependencies
+  printInstalledGlobalNpmDependencies
 
   declare -A GLOBAL_NPM_DEPENDENCIES=(
     ["@angular/cli"]="@angular/cli"
@@ -475,10 +438,10 @@ y | Y)
   )
 
   for GLOBAL_NPM_DEPENDENCY in "${!GLOBAL_NPM_DEPENDENCIES[@]}"; do
-    printInfoMessage "installing global npm dependency $GLOBAL_NPM_DEPENDENCY..."
+    printInfoMessage "Installing global npm dependency $GLOBAL_NPM_DEPENDENCY..."
     printGap
 
-    checkIfGlobalNpmDependencyIsInstalledAndInstall "$GLOBAL_NPM_DEPENDENCY"
+    installGlobalNpmDependency "$GLOBAL_NPM_DEPENDENCY"
   done
   ;;
 n | N)
@@ -495,10 +458,7 @@ read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unle
 defaultUserChoice
 case $userChoice in
 y | Y)
-  printInfoMessage "Installing flutter"
-  printGap
-
-  installAptPackage snapd
+  installDebPackage snapd
   installSnapPackage "flutter"
   installAvd
   ;;
@@ -516,13 +476,9 @@ read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unle
 defaultUserChoice
 case $userChoice in
 y | Y)
-  printInfoMessage "Installing vscode"
-  printGap
-
-  VSCODE_EXTENSION_EXISTS=$(resolveIfPackageIsInstalled code)
+  VSCODE_EXTENSION_EXISTS=$(checkIfDebPackageIsInstalled code)
   if [ -z "${VSCODE_EXTENSION_EXISTS}" ]; then
-    printWarningMessage "Package does not exist"
-    printInfoMessage "installing package..."
+    printInfoMessage "The package is not installed. Installing the package..."
     printGap
 
     wget -qO - https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >microsoft.gpg
@@ -571,15 +527,15 @@ y | Y)
       ["devondcarew.bazel-code"]="devondcarew.bazel-code"
     )
 
-    for VSCODE_EXTENSION in "${!VSCODE_EXTENSIONS[@]}"; do
-      printInfoMessage "installing vscode extension $VSCODE_EXTENSION..."
-      printGap
+    printInfoMessage "Installing the vscode extensions..."
+    printGap
 
+    for VSCODE_EXTENSION in "${!VSCODE_EXTENSIONS[@]}"; do
       code --install-extension "$VSCODE_EXTENSION"
     done
 
   else
-    printSuccessMessage "Package exists"
+    printSuccessMessage "The package is already installed."
     printNameAndValue "VSCODE_EXTENSION_EXISTS" "${VSCODE_EXTENSION_EXISTS}"
     printGap
   fi
