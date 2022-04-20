@@ -1,34 +1,50 @@
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
 name: pr-validation
 
 on:
   pull_request:
     branches: [main]
 
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: ${{ github.head_ref }}.${{ github.sha }}.pr-validation
+  cancel-in-progress: true
+
 jobs:
   premerge:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [16.x]
-
     steps:
+      - name: Don't save Bash session history
+        run: unset HISTFILE
+
       - name: Checkout sources
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - name: Validate the commit messages
+        run: |
+          sudo pip3 install -U Commitizen
+          git checkout -b premerge
+          git fetch origin main:main
+          cz check --rev-range main..premerge
+
+      - name: Detect changes
+        uses: dorny/paths-filter@v2
+        id: changes
         with:
-          node-version: ${{ matrix.node-version }}
-          check-latest: true
+          filters: |
+            shelltools:
+              - '*.sh'
+              - 'utils/*.sh'
 
-      - name: Install shellcheck
-        run: sudo apt install shellcheck
-
-      - name: Lint
-        run: shellcheck ./*.sh -x
+      - name: Lint shell
+        if: steps.changes.outputs.shelltools == 'true'
+        run: |
+          sudo apt update
+          sudo apt install -y shellcheck
+          shellcheck ./*.sh ./utils/*.sh -x

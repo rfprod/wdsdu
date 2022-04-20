@@ -546,6 +546,7 @@ y | Y)
       ["dbaeumer.vscode-eslint"]="dbaeumer.vscode-eslint"
       ["dart-code.flutter"]="dart-code.flutter"
       ["hashicorp.terraform"]="hashicorp.terraform"
+      ["VisualStudioExptTeam.vscodeintellicode"]="VisualStudioExptTeam.vscodeintellicode"
       ["firsttris.vscode-jest-runner"]="firsttris.vscode-jest-runner"
       ["shd101wyy.markdown-preview-enhanced"]="shd101wyy.markdown-preview-enhanced"
       ["pkief.material-icon-theme"]="pkief.material-icon-theme"
@@ -555,6 +556,7 @@ y | Y)
       ["johnpapa.vscode-peacock"]="johnpapa.vscode-peacock"
       ["esbenp.prettier-vscode"]="esbenp.prettier-vscode"
       ["plex.vscode-protolint"]="plex.vscode-protolint"
+      ["rust-lang.rust"]="rust-lang.rust"
       ["foxundermoon.shell-format"]="foxundermoon.shell-format"
       ["timonwong.shellcheck"]="timonwong.shellcheck"
       ["stylelint.vscode-stylelint"]="stylelint.vscode-stylelint"
@@ -567,7 +569,6 @@ y | Y)
       ["redhat.vscode-yaml"]="redhat.vscode-yaml"
       ["nrwl.angular-console"]="nrwl.angular-console"
       ["devondcarew.bazel-code"]="devondcarew.bazel-code"
-      ["rbbit.typescript-hero"]="rbbit.typescript-hero"
     )
 
     for VSCODE_EXTENSION in "${!VSCODE_EXTENSIONS[@]}"; do

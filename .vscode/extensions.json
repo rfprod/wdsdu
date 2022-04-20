@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "pkief.material-icon-theme",
+    "johnpapa.vscode-peacock",
+    "sadesyllas.vscode-workspace-switcher",
+    "editorconfig.editorconfig",
+    "shd101wyy.markdown-preview-enhanced",
+    "foxundermoon.shell-format",
+    "timonwong.shellcheck",
+    "esbenp.prettier-vscode",
+    "redhat.vscode-yaml"
+  ]
+}
