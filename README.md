@@ -27,15 +27,18 @@ Can be used to deploy Debian/Ubuntu web-development environment, which includes 
 - [`Google Chrome Stable`](https://www.google.com/chrome/index.html)
 - [`Git`](https://git-scm.com/)
 - [`Docker`](https://www.docker.com/)
+- [`Kubernetes: minikube`](https://minikube.sigs.k8s.io/docs/)
+- [`Kubernetes: kubectl`](https://kubernetes.io/docs/reference/kubectl/kubectl/)
+- [`Helm`](https://helm.sh/)
 - [`NodeJS v16` + `build essential` + `latest npm`](https://nodejs.org/en/)
 - `Global NPM dependencies`:
   - [`@angular/cli`](https://cli.angular.io/)
+  - [`@bazel/bazelisk`](https://www.npmjs.com/package/@bazel/bazelisk)
   - [`@compodoc/compodoc`](https://compodoc.app/)
   - [`@nestjs/cli`](https://docs.nestjs.com/)
   - [`@ngxs/cli`](https://www.ngxs.io/plugins/cli)
   - [`@nrwl/cli`](https://cli.angular.io/)
   - [`asar`](https://www.npmjs.com/package/asar)
-  - [`bazel`](https://bazel.build/)
   - [`clang-format`](https://github.com/angular/clang-format)
   - [`commitizen`](https://www.npmjs.com/package/commitizen)
   - [`corepack`](https://www.npmjs.com/package/corepack)
@@ -49,25 +52,26 @@ Can be used to deploy Debian/Ubuntu web-development environment, which includes 
   - [`yarn`](https://yarnpkg.com/)
 - [`Flutter`](https://flutter.dev/)
 - [`VsCode`](https://code.visualstudio.com/)
-- [`Kubernetes: minikube`](https://minikube.sigs.k8s.io/docs/)
 
-### Docker documentation
+### Documentation references
 
-- [`Docker: documentation`](https://docs.docker.com)
+#### Docker
+
+- [`Docker`](https://docs.docker.com)
 - [`Docker: Engine command-line reference`](https://docs.docker.com/engine/reference/commandline/docker/)
 - [`Docker: Configure and use Docker`](https://docs.docker.com/engine/reference/commandline/docker/)
 
-### Flutter documentation
+#### Flutter
 
-- [`Flutter: documentation`](https://flutter.dev/docs)
+- [`Flutter`](https://flutter.dev/docs)
 
-### Firebase documentation
+#### Firebase
 
 - [`Firebase Web: Getting started`](https://firebase.google.com/docs/web/setup)
 - [`Firebase Web: API Reference`](https://firebase.google.com/docs/reference/js/)
 - [`Firebase Web: Codelabs`](https://codelabs.developers.google.com/codelabs/firebase-web/#0)
 
-### Kubernetes documentation
+#### Kubernetes
 
 - [`Kubernetes`](https://kubernetes.io/docs/home/)
 - [`Kubernetes: minikube`](https://minikube.sigs.k8s.io/docs/)
