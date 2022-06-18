@@ -10,6 +10,10 @@ printUsage() {
   printGap
 }
 
+##
+# Lightweight AVD installation.
+# Installs SDK tools CLI without Android Studio.
+##
 installAvd() {
   printInfoTitle "Checking the architecture..."
   printGap
@@ -118,7 +122,7 @@ installAvd() {
 
   printInfoTitle "Touching /root/.android/repositories.cfg file to avoid missing file error"
   printGap
-  sudo mkdir /root/.android || true
+  sudo mkdir -p /root/.android || true
   sudo touch /root/.android/repositories.cfg
 
   printInfoTitle "Installing Android images..."
