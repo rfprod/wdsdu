@@ -354,20 +354,16 @@ read -r -p "    > confirm, will be installed in $USER_INPUT_TIMEOUT seconds unle
 defaultUserChoice
 case $userChoice in
 y | Y)
-  HELM_EXISTS=$(installSnapPackage helm)
-  if [ -z "${HELM_EXISTS}" ]; then
-    printInfoMessage "The package is not installed. Installing the package..."
-    printGap
-
-    sudo snap install helm --classic
-
-    printInfoMessage "Setting up helm bash completion..."
+  installSnapPackage "helm"
+  HELM_COMPLETION_INSTALLED=$(find ~/.bashrc -print0 | xargs -0 grep "source <(helm completion bash)" --color=always)
+  if [ -z "${HELM_COMPLETION_INSTALLED}" ]; then
+    printInfoMessage "Helm bash completion is not configured. Setting up..."
     printGap
 
     echo "source <(helm completion bash)" >>~/.bashrc
   else
-    printSuccessMessage "The package is already installed."
-    printNameAndValue "HELM_EXISTS" "${HELM_EXISTS}"
+    printSuccessMessage "Helm bash completion is already configured."
+    printNameAndValue "HELM_COMPLETION_INSTALLED" "${HELM_COMPLETION_INSTALLED}"
     printGap
   fi
   ;;
