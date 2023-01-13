@@ -66,7 +66,7 @@ installAvd() {
   fi
 
   local SDK_ZIP_PATH
-  SDK_ZIP_PATH="${HOME}/Downloads/commandlinetools-linux-7583922_latest.zip"
+  SDK_ZIP_PATH="${HOME}/Downloads/commandlinetools-linux-9123335_latest.zip"
 
   printInfoTitle "Downloading (if needed), and unpacking the Android SDK Tools..."
   printGap
@@ -75,7 +75,7 @@ installAvd() {
     ##
     # If wget fails find latest here: https://developer.android.com/studio#downloads
     ##
-    wget https://dl.google.com/android/repository/commandlinetools-linux-8092744_latest.zip -O "${SDK_ZIP_PATH}"
+    wget https://dl.google.com/android/repository/commandlinetools-linux-9123335_latest.zip -O "${SDK_ZIP_PATH}"
   fi
   unzip "${SDK_ZIP_PATH}" -d "${HOME}/Downloads"
 
@@ -116,18 +116,22 @@ installAvd() {
   printGap
   yes | "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --licenses
 
-  printInfoTitle "Installing Android SDK Platform 31 or later, Android SDK Build-Tools 30.0.3 or later, Android Support Repository, Google Repository"
+  printInfoTitle "Installing Android SDK Platform 31 or later, Android SDK Build-Tools 31.0.3 or later, Android Support Repository, Google Repository"
   printGap
-  "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --install "tools" "platform-tools" "platforms;android-31" "build-tools;30.0.2" "extras;android;m2repository" "extras;google;m2repository"
+  "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --install "tools" "platform-tools" "platforms;android-31" "build-tools;31.0.0" "extras;android;m2repository" "extras;google;m2repository"
 
   printInfoTitle "Touching /root/.android/repositories.cfg file to avoid missing file error"
   printGap
   sudo mkdir -p /root/.android || true
   sudo touch /root/.android/repositories.cfg
 
+  printInfoTitle "Updating Android sdkmanager..."
+  printGap
+  "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --update
+
   printInfoTitle "Installing Android images..."
   printGap
-  "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager "system-images;android-30;google_apis;x86"
+  "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager "system-images;android-31;google_apis;x86_64"
 
   printInfoTitle "Listing available targets..."
   printGap
@@ -135,7 +139,7 @@ installAvd() {
 
   printInfoTitle "Creating an AVD..."
   printGap
-  "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" create avd -n api31device -k "system-images;android-30;google_apis;x86"
+  "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" create avd -n api31device -k "system-images;android-31;google_apis;x86_64"
 
   printInfoTitle "Listing available AVDs..."
   printGap
