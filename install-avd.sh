@@ -116,9 +116,9 @@ installAvd() {
   printGap
   yes | "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --licenses
 
-  printInfoTitle "Installing Android SDK Platform 31 or later, Android SDK Build-Tools 31.0.3 or later, Android Support Repository, Google Repository"
+  printInfoTitle "Installing Android SDK Platform 33 or later, Android SDK Build-Tools 33.0.0 or later, Android Support Repository, Google Repository"
   printGap
-  "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --install "tools" "platform-tools" "platforms;android-31" "build-tools;31.0.0" "extras;android;m2repository" "extras;google;m2repository"
+  "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --install "tools" "platform-tools" "platforms;android-33" "build-tools;33.0.0" "extras;android;m2repository" "extras;google;m2repository"
 
   printInfoTitle "Touching /root/.android/repositories.cfg file to avoid missing file error"
   printGap
@@ -131,7 +131,7 @@ installAvd() {
 
   printInfoTitle "Installing Android images..."
   printGap
-  "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager "system-images;android-31;google_apis;x86_64"
+  "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager "system-images;android-33;google_apis;x86_64"
 
   printInfoTitle "Listing available targets..."
   printGap
@@ -139,7 +139,7 @@ installAvd() {
 
   printInfoTitle "Creating an AVD..."
   printGap
-  "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" create avd -n api31device -k "system-images;android-31;google_apis;x86_64"
+  "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" create avd -n api33device -k "system-images;android-33;google_apis;x86_64"
 
   printInfoTitle "Listing available AVDs..."
   printGap
