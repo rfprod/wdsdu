@@ -34,9 +34,9 @@ installAvd() {
   printGap
   sudo apt-get install g++
 
-  printInfoTitle "Installing the Open JDK 17..."
+  printInfoTitle "Installing the Open JDK 11..."
   printGap
-  sudo apt-get install default-jdk openjdk-17-jdk
+  sudo apt-get install default-jdk openjdk-11-jdk
 
   printInfoTitle "Configuring the JDK..."
   printGap
