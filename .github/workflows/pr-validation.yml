@@ -17,34 +17,46 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Don't save Bash session history
-        run: unset HISTFILE
-
       - name: Checkout sources
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Validate the commit messages
         run: |
-          sudo pip3 install -U Commitizen
+          python3 -m venv .venv
+          . .venv/bin/activate
+          python -m pip install --upgrade pip
+          python -m pip install commitizen
           git checkout -b premerge
           git fetch origin main:main
           cz check --rev-range main..premerge
 
       - name: Detect changes
-        uses: dorny/paths-filter@v2
+        uses: dorny/paths-filter@v4
         id: changes
         with:
           filters: |
             shelltools:
               - '*.sh'
               - 'utils/*.sh'
+              - 'lib/*.sh'
 
       - name: Lint shell
         if: steps.changes.outputs.shelltools == 'true'
         run: |
           sudo apt update
           sudo apt install -y shellcheck
-          shellcheck ./*.sh ./utils/*.sh -x
+          shellcheck ./*.sh ./utils/*.sh ./lib/*.sh -x
+
+      - name: Test container
+        if: steps.changes.outputs.shelltools == 'true'
+        run: |
+          sudo docker build -f ./.docker/test-ubuntu.Dockerfile -t test-ubuntu:ci .
+
+      - name: Remove test image
+        if: always()
+        run: |
+          sudo docker image rm -f test-ubuntu:ci || true
+          sudo docker builder prune -af || true

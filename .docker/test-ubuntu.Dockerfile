@@ -7,6 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Create app directory.
 WORKDIR /app
 # Copy scripts.
+COPY ./lib ./lib
 COPY ./utils ./utils
 COPY ./install.sh ./
 COPY ./install-avd.sh ./

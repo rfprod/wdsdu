@@ -15,23 +15,43 @@
 
 # shellcheck disable=SC2034
 
-DEFAULT='\033[0m'
-BLACK='\033[0;30m'
-DARK_GRAY='\033[1;30m'
-RED='\033[0;31m'
-LIGHT_RED='\033[1;31m'
-GREEN='\033[0;32m'
-LIGHT_GREEN='\033[1;32m'
-BROWN='\033[0;33m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-LIGHT_BLUE='\033[1;34m'
-PURPLE='\033[0;35m'
-LIGHT_PURPLE='\033[1;35m'
-CYAN='\033[0;36m'
-LIGHT_CYAN='\033[1;36m'
-LIGHT_GRAY='\033[0;37m'
-WHITE='\033[1;37m'
+if [[ -t 1 && -z "${NO_COLOR:-}" && "${TERM:-dumb}" != dumb ]]; then
+  DEFAULT=$'\033[0m'
+  BLACK=$'\033[0;30m'
+  DARK_GRAY=$'\033[1;30m'
+  RED=$'\033[0;31m'
+  LIGHT_RED=$'\033[1;31m'
+  GREEN=$'\033[0;32m'
+  LIGHT_GREEN=$'\033[1;32m'
+  BROWN=$'\033[0;33m'
+  YELLOW=$'\033[1;33m'
+  BLUE=$'\033[0;34m'
+  LIGHT_BLUE=$'\033[1;34m'
+  PURPLE=$'\033[0;35m'
+  LIGHT_PURPLE=$'\033[1;35m'
+  CYAN=$'\033[0;36m'
+  LIGHT_CYAN=$'\033[1;36m'
+  LIGHT_GRAY=$'\033[0;37m'
+  WHITE=$'\033[1;37m'
+else
+  DEFAULT=''
+  BLACK=''
+  DARK_GRAY=''
+  RED=''
+  LIGHT_RED=''
+  GREEN=''
+  LIGHT_GREEN=''
+  BROWN=''
+  YELLOW=''
+  BLUE=''
+  LIGHT_BLUE=''
+  PURPLE=''
+  LIGHT_PURPLE=''
+  CYAN=''
+  LIGHT_CYAN=''
+  LIGHT_GRAY=''
+  WHITE=''
+fi
 
 REGISTERED_COLOR_NAMES=(
   DEFAULT
@@ -73,7 +93,7 @@ REGISTERED_COLOR_VARS=(
   "$WHITE"
 )
 
-reportSupportedColors() {
+print_supported_colors() {
   local TITLE="<< COLORS >>"
   printf "
     ${LIGHT_BLUE} %s ${DEFAULT}\n" "$TITLE"
@@ -92,5 +112,5 @@ reportSupportedColors() {
 # Colors usage.
 ##
 if [ "$1" = "?" ]; then
-  reportSupportedColors
+  print_supported_colors
 fi

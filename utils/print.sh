@@ -1,12 +1,13 @@
 #!/bin/bash
 
+# shellcheck source=utils/colors.sh
 source utils/colors.sh ''
 
-printGap() {
+print_gap() {
   printf "\n\n"
 }
 
-printUsageTip() {
+print_usage_tip() {
   local COMMAND
   COMMAND=$1
   local DESCRIPTION
@@ -15,7 +16,7 @@ printUsageTip() {
     ${DEFAULT} - ${YELLOW}%s${DEFAULT}: %s${DEFAULT}" "$COMMAND" "$DESCRIPTION"
 }
 
-printNameAndValue() {
+print_name_and_value() {
   local NAME
   NAME=$1
   local VALUE
@@ -24,7 +25,7 @@ printNameAndValue() {
     ${DEFAULT} - ${DEFAULT}%s${DEFAULT}: ${YELLOW}%s${DEFAULT}" "$NAME" "$VALUE"
 }
 
-printInfoTitle() {
+print_info_title() {
   local TITLE
   TITLE=$1
   printf "
@@ -32,14 +33,15 @@ printInfoTitle() {
     ${DEFAULT}" "$TITLE"
 }
 
-printInfoMessage() {
+print_info_message() {
   local MESSAGE
   MESSAGE=$1
   printf "
-    ${LIGHT_CYAN}%s${DEFAULT}" "$MESSAGE"
+    ${LIGHT_CYAN}%s
+    ${DEFAULT}" "$MESSAGE"
 }
 
-printErrorTitle() {
+print_error_title() {
   local TITLE
   TITLE=$1
   printf "
@@ -47,14 +49,15 @@ printErrorTitle() {
     ${DEFAULT}" "$TITLE"
 }
 
-printWarningMessage() {
+print_warning_message() {
   local MESSAGE
   MESSAGE=$1
   printf "
-    ${LIGHT_RED}%s${DEFAULT}" "$MESSAGE"
+    ${LIGHT_RED}%s
+    ${DEFAULT}" "$MESSAGE"
 }
 
-printSuccessTitle() {
+print_success_title() {
   local TITLE
   TITLE=$1
   printf "
@@ -62,7 +65,7 @@ printSuccessTitle() {
     ${DEFAULT}" "$TITLE"
 }
 
-printSuccessMessage() {
+print_success_message() {
   local MESSAGE
   MESSAGE=$1
   printf "
@@ -73,11 +76,11 @@ if [ "$1" = "?" ]; then
   printf "
     ${LIGHT_BLUE}%s\n
     ${DEFAULT} Importing this file in another files exposes the following functions:\n
-    ${DEFAULT} - ${YELLOW} printGap
-    ${DEFAULT} - ${YELLOW} printInfoTitle
-    ${DEFAULT} - ${YELLOW} printErrorTitle
-    ${DEFAULT} - ${YELLOW} printWarningMessage
-    ${DEFAULT} - ${YELLOW} printSuccessTitle
-    ${DEFAULT} - ${YELLOW} printNameAndValue
+    ${DEFAULT} - ${YELLOW} print_gap
+    ${DEFAULT} - ${YELLOW} print_info_title
+    ${DEFAULT} - ${YELLOW} print_error_title
+    ${DEFAULT} - ${YELLOW} print_warning_message
+    ${DEFAULT} - ${YELLOW} print_success_title
+    ${DEFAULT} - ${YELLOW} print_name_and_value
     ${DEFAULT}\n\n" "USAGE"
 fi
